@@ -1,94 +1,134 @@
-# 10x Astro Starter
+# 10xCards
 
-A modern, opinionated starter template for building fast, accessible, and AI-friendly web applications.
+An AI-powered flashcard generation web application that automates the creation of educational flashcards using artificial intelligence, making spaced repetition learning accessible and efficient.
+
+## Table of Contents
+
+- [Project Description](#project-description)
+- [Tech Stack](#tech-stack)
+- [Getting Started Locally](#getting-started-locally)
+- [Available Scripts](#available-scripts)
+- [Project Scope](#project-scope)
+- [Project Status](#project-status)
+- [License](#license)
+
+## Project Description
+
+10xCards is an MVP (Minimum Viable Product) web application designed to solve the main barrier to using spaced repetition learning methods - the time-consuming process of manually creating flashcards.
+
+The application uses GPT-4o-mini to generate question-answer pairs from user-provided text, then manages the learning process using the proven SM-2 algorithm with a simplified binary rating system (Remember / Don't Remember).
+
+### Key Features
+
+- **AI Flashcard Generation**: Paste text (1,000-10,000 characters) and let AI generate flashcard proposals
+- **Staging Area**: Review, edit, accept, or reject AI-generated flashcards before saving
+- **Manual Flashcard Creation**: Create custom flashcards with Front/Back format
+- **Spaced Repetition Learning**: SM-2 algorithm-based study sessions with optimal review scheduling
+- **Flashcard Management**: Full CRUD operations with search and pagination
+- **User Authentication**: Email/password authentication with private data access (RLS)
+- **Progress Tracking**: Reset learning progress for individual flashcards or entire database
 
 ## Tech Stack
 
-- [Astro](https://astro.build/) v5.5.5 - Modern web framework for building fast, content-focused websites
-- [React](https://react.dev/) v19.0.0 - UI library for building interactive components
-- [TypeScript](https://www.typescriptlang.org/) v5 - Type-safe JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) v4.0.17 - Utility-first CSS framework
+### Frontend
+- **Astro 5** - Fast, efficient pages with minimal JavaScript
+- **React 19** - Interactive components where needed
+- **TypeScript 5** - Static typing and IDE support
+- **Tailwind CSS 4** - Utility-first styling
+- **Shadcn/ui** - Accessible React component library
 
-## Prerequisites
+### Backend
+- **Supabase** - Backend-as-a-Service with PostgreSQL database
+- **Supabase Auth** - Built-in user authentication
 
-- Node.js v22.14.0 (as specified in `.nvmrc`)
-- npm (comes with Node.js)
+### AI Integration
+- **Openrouter.ai** - Access to multiple AI models (OpenAI, Anthropic, Google) with API cost management
 
-## Getting Started
+### CI/CD & Hosting
+- **GitHub Actions** - CI/CD pipelines
+- **DigitalOcean** - Docker-based application hosting
+
+## Getting Started Locally
+
+### Prerequisites
+
+- Node.js 22.14.0 (see `.nvmrc`)
+- npm or yarn
+
+### Installation
 
 1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/10xcards.git
+   cd 10xcards
+   ```
 
-```bash
-git clone https://github.com/przeprogramowani/10x-astro-starter.git
-cd 10x-astro-starter
-```
+2. Use the correct Node.js version:
+   ```bash
+   nvm use
+   ```
 
-2. Install dependencies:
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm install
-```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-3. Run the development server:
-
-```bash
-npm run dev
-```
-
-4. Build for production:
-
-```bash
-npm run build
-```
+5. Open your browser and navigate to `http://localhost:4321`
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Run ESLint checks |
+| `npm run lint:fix` | Run ESLint and fix issues |
+| `npm run format` | Format code with Prettier |
 
-## Project Structure
+## Project Scope
 
-```md
-.
-├── src/
-│   ├── layouts/    # Astro layouts
-│   ├── pages/      # Astro pages
-│   │   └── api/    # API endpoints
-│   ├── components/ # UI components (Astro & React)
-│   └── assets/     # Static assets
-├── public/         # Public assets
-```
+### Included in MVP
 
-## AI Development Support
+- User registration and authentication (email/password)
+- AI-powered flashcard generation from text input
+- Staging area for reviewing AI proposals
+- Manual flashcard creation
+- Full flashcard management (CRUD)
+- SM-2 spaced repetition algorithm
+- Binary rating system (Remember / Don't Remember)
+- Session limit of 20 new flashcards per study session
+- Learning progress reset functionality
+- Generation analytics logging
+- Responsive design optimized for mobile learning
 
-This project is configured with AI development tools to enhance the development experience, providing guidelines for:
+### Not Included in MVP
 
-- Project structure
-- Coding practices
-- Frontend development
-- Styling with Tailwind
-- Accessibility best practices
-- Astro and React guidelines
+- File format support (PDF, DOCX, images)
+- Advanced algorithms (SuperMemo 17+, Anki FSRS)
+- Tags, folders, or categorization system
+- Deck sharing between users
+- Native mobile applications
+- Rich text formatting (bold, lists, math formulas)
+- Duplicate detection
+- Offline mode
 
-### Cursor IDE
+## Project Status
 
-The project includes AI rules in `.cursor/rules/` directory that help Cursor IDE understand the project structure and provide better code suggestions.
+**Current Version**: 0.0.1
 
-### GitHub Copilot
+This project is currently in closed beta (invite-only access).
 
-AI instructions for GitHub Copilot are available in `.github/copilot-instructions.md`
+### Success Metrics
 
-### Windsurf
-
-The `.windsurfrules` file contains AI configuration for Windsurf.
-
-## Contributing
-
-Please follow the AI guidelines and coding practices defined in the AI configuration files when contributing to this project.
+- **AI Acceptance Rate**: Target 75% of AI-generated flashcards accepted without edits
+- **AI Adoption Rate**: Target 75% of all flashcards generated by AI
 
 ## License
 
-MIT
+This project is proprietary software. All rights reserved.
