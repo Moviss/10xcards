@@ -19,3 +19,15 @@ export const parsedFlashcardsResponseSchema = z.object({
 });
 
 export type ParsedFlashcardsResponse = z.infer<typeof parsedFlashcardsResponseSchema>;
+
+export const getGenerationLogsQuerySchema = z.object({
+  page: z.coerce.number().int().min(1, "Parametr page musi być >= 1").default(1),
+  limit: z.coerce
+    .number()
+    .int()
+    .min(1, "Parametr limit musi być >= 1")
+    .max(100, "Parametr limit nie może przekraczać 100")
+    .default(20),
+});
+
+export type GetGenerationLogsQuery = z.infer<typeof getGenerationLogsQuerySchema>;

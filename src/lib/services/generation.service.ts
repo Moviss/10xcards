@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "../../db/database.types";
-import type { GenerateFlashcardsCommand, GenerationResponseDTO } from "../../types";
+import type { GenerateFlashcardsCommand, GenerationLogsListResponseDTO, GenerationResponseDTO } from "../../types";
 import { createOpenrouterService, OpenrouterError } from "./openrouter.service";
 
 export class GenerationServiceError extends Error {
@@ -94,6 +94,36 @@ export class GenerationService {
     if (error) {
       console.error("Failed to update generation log model:", error);
     }
+  }
+
+  async getGenerationLogs(page: number, limit: number): Promise<GenerationLogsListResponseDTO> {
+    const offset = (page - 1) * limit;
+
+    const { data, error, count } = await this.supabase
+      .from("generation_logs")
+      .select(
+        "id, source_text_length, generated_count, accepted_unedited_count, accepted_edited_count, rejected_count, model_used, created_at",
+        { count: "exact" }
+      )
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
+
+    if (error) {
+      throw new GenerationServiceError("Błąd serwera", 500);
+    }
+
+    const total = count ?? 0;
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: data ?? [],
+      pagination: {
+        page,
+        limit,
+        total,
+        total_pages: totalPages,
+      },
+    };
   }
 }
 
