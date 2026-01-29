@@ -94,9 +94,8 @@ export function GeneratorContainer() {
   // Handle save with success toast
   const handleSave = useCallback(async () => {
     const countBefore = proposals.filter((p) => p.status === "accepted").length;
-    await saveAcceptedProposals();
-    // Show success toast only if there were accepted proposals (save was attempted)
-    if (countBefore > 0) {
+    const success = await saveAcceptedProposals();
+    if (success && countBefore > 0) {
       toast.success(`Zapisano ${countBefore} fiszek pomyślnie!`, {
         duration: 3000,
       });

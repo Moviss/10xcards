@@ -40,7 +40,7 @@ interface UseGeneratorReturn {
   saveProposalEdit: (id: string, front: string, back: string) => void;
 
   // Save action
-  saveAcceptedProposals: () => Promise<void>;
+  saveAcceptedProposals: () => Promise<boolean>;
 
   // Helpers
   hasAcceptedProposals: boolean;
@@ -260,11 +260,11 @@ export function useGenerator(): UseGeneratorReturn {
   }, []);
 
   // Save accepted proposals
-  const saveAcceptedProposals = useCallback(async () => {
+  const saveAcceptedProposals = useCallback(async (): Promise<boolean> => {
     const acceptedProposals = proposals.filter((p) => p.status === "accepted");
 
     if (acceptedProposals.length === 0 || !generationLogId) {
-      return;
+      return false;
     }
 
     setIsSaving(true);
@@ -291,17 +291,17 @@ export function useGenerator(): UseGeneratorReturn {
       if (!response.ok) {
         if (response.status === 401) {
           window.location.href = "/login";
-          return;
+          return false;
         }
 
         if (response.status === 404) {
           setErrors({ save: "Sesja generowania wygasła. Wygeneruj fiszki ponownie." });
-          return;
+          return false;
         }
 
         const errorData = await response.json().catch(() => ({}));
         setErrors({ save: errorData.error || "Wystąpił błąd serwera. Spróbuj ponownie." });
-        return;
+        return false;
       }
 
       await response.json();
@@ -312,9 +312,10 @@ export function useGenerator(): UseGeneratorReturn {
       setProposals([]);
       clearLocalStorage();
 
-      return;
+      return true;
     } catch {
       setErrors({ save: "Nie można połączyć z serwerem. Sprawdź połączenie internetowe." });
+      return false;
     } finally {
       setIsSaving(false);
     }
