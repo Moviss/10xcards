@@ -33,11 +33,7 @@ export function FlashcardsTable({ flashcards, onFlashcardClick }: FlashcardsTabl
         </thead>
         <tbody>
           {flashcards.map((flashcard) => (
-            <FlashcardTableRow
-              key={flashcard.id}
-              flashcard={flashcard}
-              onClick={() => handleRowClick(flashcard)}
-            />
+            <FlashcardTableRow key={flashcard.id} flashcard={flashcard} onClick={() => handleRowClick(flashcard)} />
           ))}
         </tbody>
       </table>

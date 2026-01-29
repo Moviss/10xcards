@@ -34,14 +34,10 @@ export function FlashcardTableRow({ flashcard, onClick }: FlashcardTableRowProps
       aria-label={`Edytuj fiszkę: ${truncateText(flashcard.front, 50)}`}
     >
       <td className="py-4 px-4">
-        <span className="line-clamp-2">
-          {truncateText(flashcard.front, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}
-        </span>
+        <span className="line-clamp-2">{truncateText(flashcard.front, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}</span>
       </td>
       <td className="py-4 px-4">
-        <span className="line-clamp-2">
-          {truncateText(flashcard.back, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}
-        </span>
+        <span className="line-clamp-2">{truncateText(flashcard.back, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}</span>
       </td>
       <td className="py-4 px-4">
         {flashcard.is_ai_generated && (

@@ -25,7 +25,7 @@ export function FlashcardCard({ flashcard, onClick }: FlashcardCardProps) {
   );
 
   return (
-    <article
+    <div
       className="p-4 border rounded-lg cursor-pointer transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       onClick={onClick}
       onKeyDown={handleKeyDown}
@@ -42,15 +42,13 @@ export function FlashcardCard({ flashcard, onClick }: FlashcardCardProps) {
           </span>
         )}
       </div>
-      <p className="line-clamp-2 mb-3">
-        {truncateText(flashcard.front, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}
-      </p>
+      <p className="line-clamp-2 mb-3">{truncateText(flashcard.front, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}</p>
       <div className="pt-3 border-t">
         <span className="text-xs font-medium text-muted-foreground uppercase block mb-1">Tył</span>
         <p className="line-clamp-2 text-muted-foreground">
           {truncateText(flashcard.back, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}
         </p>
       </div>
-    </article>
+    </div>
   );
 }

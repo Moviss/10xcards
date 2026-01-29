@@ -73,10 +73,7 @@ export function Pagination({ pagination, onPageChange }: PaginationProps) {
   }
 
   return (
-    <nav
-      className="flex flex-col sm:flex-row items-center justify-between gap-4"
-      aria-label="Nawigacja paginacji"
-    >
+    <nav className="flex flex-col sm:flex-row items-center justify-between gap-4" aria-label="Nawigacja paginacji">
       <div className="text-sm text-muted-foreground order-2 sm:order-1">
         Strona {page} z {total_pages} ({total} {total === 1 ? "fiszka" : total < 5 ? "fiszki" : "fiszek"})
       </div>
@@ -114,13 +111,7 @@ export function Pagination({ pagination, onPageChange }: PaginationProps) {
           )}
         </div>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleNext}
-          disabled={!canGoNext}
-          aria-label="Następna strona"
-        >
+        <Button variant="outline" size="sm" onClick={handleNext} disabled={!canGoNext} aria-label="Następna strona">
           <span className="sr-only sm:not-sr-only sm:mr-1">Następna</span>
           <ChevronRight className="h-4 w-4" />
         </Button>

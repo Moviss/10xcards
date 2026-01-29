@@ -26,13 +26,7 @@ export function FlashcardsContent({
   }
 
   if (flashcards.length === 0) {
-    return (
-      <EmptyState
-        hasSearchQuery={hasSearchQuery}
-        onClearSearch={onClearSearch}
-        onAddClick={onAddClick}
-      />
-    );
+    return <EmptyState hasSearchQuery={hasSearchQuery} onClearSearch={onClearSearch} onAddClick={onAddClick} />;
   }
 
   return (

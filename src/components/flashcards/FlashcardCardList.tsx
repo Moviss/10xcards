@@ -18,11 +18,7 @@ export function FlashcardCardList({ flashcards, onFlashcardClick }: FlashcardCar
   return (
     <div className="md:hidden space-y-4">
       {flashcards.map((flashcard) => (
-        <FlashcardCard
-          key={flashcard.id}
-          flashcard={flashcard}
-          onClick={() => handleCardClick(flashcard)}
-        />
+        <FlashcardCard key={flashcard.id} flashcard={flashcard} onClick={() => handleCardClick(flashcard)} />
       ))}
     </div>
   );

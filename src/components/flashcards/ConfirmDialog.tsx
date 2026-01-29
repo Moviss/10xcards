@@ -43,11 +43,7 @@ export function ConfirmDialog({
           <AlertDialogCancel onClick={onCancel} disabled={isLoading}>
             {cancelLabel}
           </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={onConfirm}
-            disabled={isLoading}
-            variant={variant}
-          >
+          <AlertDialogAction onClick={onConfirm} disabled={isLoading} variant={variant}>
             {isLoading ? "Przetwarzanie..." : confirmLabel}
           </AlertDialogAction>
         </AlertDialogFooter>

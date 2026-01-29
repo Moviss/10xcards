@@ -367,52 +367,49 @@ export function useFlashcards(): UseFlashcardsReturn {
   );
 
   // Reset progress
-  const resetProgress = useCallback(
-    async (id: string): Promise<boolean> => {
-      setIsResettingProgress(true);
-      try {
-        const result = await resetProgressApi(id);
-        // Update flashcard in state with reset values
-        setFlashcards((prev) =>
-          prev.map((f) =>
-            f.id === id
-              ? {
-                  ...f,
-                  interval: result.interval,
-                  ease_factor: result.ease_factor,
-                  repetitions: result.repetitions,
-                  next_review_date: result.next_review_date,
-                  last_reviewed_at: result.last_reviewed_at,
-                }
-              : f
-          )
-        );
-        // Also update editing flashcard if it's the same
-        setEditingFlashcard((prev) =>
-          prev && prev.id === id
+  const resetProgress = useCallback(async (id: string): Promise<boolean> => {
+    setIsResettingProgress(true);
+    try {
+      const result = await resetProgressApi(id);
+      // Update flashcard in state with reset values
+      setFlashcards((prev) =>
+        prev.map((f) =>
+          f.id === id
             ? {
-                ...prev,
+                ...f,
                 interval: result.interval,
                 ease_factor: result.ease_factor,
                 repetitions: result.repetitions,
                 next_review_date: result.next_review_date,
                 last_reviewed_at: result.last_reviewed_at,
               }
-            : prev
-        );
-        return true;
-      } catch (err) {
-        if (err instanceof Error && err.message === "UNAUTHORIZED") {
-          handleUnauthorized();
-          return false;
-        }
-        throw err;
-      } finally {
-        setIsResettingProgress(false);
+            : f
+        )
+      );
+      // Also update editing flashcard if it's the same
+      setEditingFlashcard((prev) =>
+        prev && prev.id === id
+          ? {
+              ...prev,
+              interval: result.interval,
+              ease_factor: result.ease_factor,
+              repetitions: result.repetitions,
+              next_review_date: result.next_review_date,
+              last_reviewed_at: result.last_reviewed_at,
+            }
+          : prev
+      );
+      return true;
+    } catch (err) {
+      if (err instanceof Error && err.message === "UNAUTHORIZED") {
+        handleUnauthorized();
+        return false;
       }
-    },
-    []
-  );
+      throw err;
+    } finally {
+      setIsResettingProgress(false);
+    }
+  }, []);
 
   // Refetch
   const refetch = useCallback(async () => {

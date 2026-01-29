@@ -22,7 +22,6 @@ export function FlashcardsContainer() {
     setSorting,
 
     // Pagination
-    currentPage,
     goToPage,
 
     // States
@@ -140,12 +139,7 @@ export function FlashcardsContainer() {
         <Pagination pagination={pagination} onPageChange={goToPage} />
       )}
 
-      <FlashcardAddModal
-        isOpen={isAddModalOpen}
-        onClose={closeAddModal}
-        onSave={handleCreate}
-        isSaving={isSaving}
-      />
+      <FlashcardAddModal isOpen={isAddModalOpen} onClose={closeAddModal} onSave={handleCreate} isSaving={isSaving} />
 
       <FlashcardEditModal
         flashcard={editingFlashcard}
