@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 import type { StudySummaryProps } from "./types";
 
 export function StudySummary({ summary, isInterrupted, onFinish }: StudySummaryProps) {
-  const { totalReviewed, newCardsReviewed, reviewCardsReviewed, rememberedCount, forgottenCount, successRate } = summary;
+  const { totalReviewed, newCardsReviewed, reviewCardsReviewed, rememberedCount, forgottenCount, successRate } =
+    summary;
 
   const getSuccessMessage = () => {
     if (totalReviewed === 0) {
@@ -39,7 +40,10 @@ export function StudySummary({ summary, isInterrupted, onFinish }: StudySummaryP
             )}
           >
             <Trophy
-              className={cn("h-6 w-6", isInterrupted ? "text-amber-600 dark:text-amber-400" : "text-green-600 dark:text-green-400")}
+              className={cn(
+                "h-6 w-6",
+                isInterrupted ? "text-amber-600 dark:text-amber-400" : "text-green-600 dark:text-green-400"
+              )}
               aria-hidden="true"
             />
           </div>
@@ -65,7 +69,10 @@ export function StudySummary({ summary, isInterrupted, onFinish }: StudySummaryP
             <span className="text-lg font-semibold">{totalReviewed}</span>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg bg-green-50 dark:bg-green-900/20 px-4 py-3" role="listitem">
+          <div
+            className="flex items-center justify-between rounded-lg bg-green-50 dark:bg-green-900/20 px-4 py-3"
+            role="listitem"
+          >
             <div className="flex items-center gap-3">
               <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" aria-hidden="true" />
               <span className="text-sm">Zapamiętane</span>
@@ -73,7 +80,10 @@ export function StudySummary({ summary, isInterrupted, onFinish }: StudySummaryP
             <span className="text-lg font-semibold text-green-600 dark:text-green-400">{rememberedCount}</span>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg bg-red-50 dark:bg-red-900/20 px-4 py-3" role="listitem">
+          <div
+            className="flex items-center justify-between rounded-lg bg-red-50 dark:bg-red-900/20 px-4 py-3"
+            role="listitem"
+          >
             <div className="flex items-center gap-3">
               <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" aria-hidden="true" />
               <span className="text-sm">Zapomniane</span>

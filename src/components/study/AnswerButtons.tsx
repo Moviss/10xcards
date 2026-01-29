@@ -13,11 +13,7 @@ export function AnswerButtons({ onAnswer, isSubmitting }: AnswerButtonsProps) {
   }, [onAnswer]);
 
   return (
-    <div
-      className="flex flex-col sm:flex-row gap-3 w-full"
-      role="group"
-      aria-label="Przyciski oceny odpowiedzi"
-    >
+    <div className="flex flex-col sm:flex-row gap-3 w-full" role="group" aria-label="Przyciski oceny odpowiedzi">
       <Button
         variant="destructive"
         size="lg"

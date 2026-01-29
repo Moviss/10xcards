@@ -107,7 +107,8 @@ export function useStudySession(): UseStudySessionReturn {
   const [summary, setSummary] = useState<SessionSummary | null>(null);
 
   // Computed current card
-  const currentCard = status === "studying" && progress.currentIndex < cards.length ? cards[progress.currentIndex] : null;
+  const currentCard =
+    status === "studying" && progress.currentIndex < cards.length ? cards[progress.currentIndex] : null;
 
   // Fetch session from API
   const fetchSession = useCallback(async () => {
@@ -200,13 +201,12 @@ export function useStudySession(): UseStudySessionReturn {
           remembered,
         });
       } catch (err) {
-        // Log error but don't block the flow - API call is fire-and-forget
+        // Don't block the flow - API call is fire-and-forget
         if (err instanceof Error && err.message === "UNAUTHORIZED") {
           handleUnauthorized();
           return;
         }
         // Continue despite error - the answer is already recorded locally
-        console.error("Failed to submit review:", err);
       } finally {
         setIsSubmitting(false);
       }

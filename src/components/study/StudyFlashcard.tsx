@@ -29,7 +29,7 @@ export function StudyFlashcard({ card, isRevealed, onReveal, onAnswer, isSubmitt
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
       <div
-        role="article"
+        role={!isRevealed ? "button" : undefined}
         aria-labelledby={frontId}
         aria-describedby={isRevealed ? backId : undefined}
         className={cn(
@@ -40,7 +40,6 @@ export function StudyFlashcard({ card, isRevealed, onReveal, onAnswer, isSubmitt
         onClick={handleCardClick}
         onKeyDown={handleKeyDown}
         tabIndex={!isRevealed ? 0 : -1}
-        aria-expanded={isRevealed}
       >
         {/* Front side */}
         <div className="p-6 sm:p-8">
