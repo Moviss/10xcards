@@ -1,8 +1,10 @@
 ---
-import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
+import LandingPage from "../components/landing/LandingPage.astro";
+
+export const prerender = true;
 ---
 
-<Layout>
-  <Welcome />
+<Layout title="10xCards - Twórz fiszki z AI">
+  <LandingPage />
 </Layout>
