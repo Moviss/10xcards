@@ -1,21 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useNavigation } from "@/lib/hooks/useNavigation";
 import { getUserEmailFromToken } from "@/lib/auth.client";
 import { TopNav } from "./TopNav";
 import { MobileNav } from "./MobileNav";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 
-interface NavigationProps {
-  currentPath: string;
+function useCurrentPath() {
+  return useSyncExternalStore(
+    (callback) => {
+      window.addEventListener("popstate", callback);
+      document.addEventListener("astro:page-load", callback);
+      return () => {
+        window.removeEventListener("popstate", callback);
+        document.removeEventListener("astro:page-load", callback);
+      };
+    },
+    () => window.location.pathname,
+    () => "/"
+  );
 }
 
-export function Navigation({ currentPath }: NavigationProps) {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-
-  useEffect(() => {
-    const email = getUserEmailFromToken();
-    setUserEmail(email);
-  }, []);
+export function Navigation() {
+  const currentPath = useCurrentPath();
+  const [userEmail] = useState<string | null>(() => getUserEmailFromToken());
   const {
     isLoggingOut,
     isDeleting,

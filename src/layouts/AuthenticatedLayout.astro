@@ -7,7 +7,6 @@ interface Props {
 }
 
 const { title = "10xCards" } = Astro.props;
-const currentPath = Astro.url.pathname;
 ---
 
 <Layout title={title}>
@@ -18,7 +17,7 @@ const currentPath = Astro.url.pathname;
     Przejdź do treści głównej
   </a>
   <div class="flex min-h-screen flex-col">
-    <Navigation client:load currentPath={currentPath} />
+    <Navigation client:load transition:persist />
     <main id="main-content" class="flex-1" tabindex="-1">
       <slot />
     </main>
