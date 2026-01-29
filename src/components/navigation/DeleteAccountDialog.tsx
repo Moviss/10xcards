@@ -47,7 +47,8 @@ export function DeleteAccountDialog({ isOpen, onClose, onConfirm, isLoading }: D
         <AlertDialogHeader>
           <AlertDialogTitle>Czy na pewno chcesz usunąć konto?</AlertDialogTitle>
           <AlertDialogDescription>
-            Ta operacja jest nieodwracalna. Wszystkie Twoje dane, w tym fiszki i historia nauki, zostaną trwale usunięte.
+            Ta operacja jest nieodwracalna. Wszystkie Twoje dane, w tym fiszki i historia nauki, zostaną trwale
+            usunięte.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -70,11 +71,7 @@ export function DeleteAccountDialog({ isOpen, onClose, onConfirm, isLoading }: D
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Anuluj</AlertDialogCancel>
-          <AlertDialogAction
-            variant="destructive"
-            disabled={!isConfirmValid || isLoading}
-            onClick={handleConfirm}
-          >
+          <AlertDialogAction variant="destructive" disabled={!isConfirmValid || isLoading} onClick={handleConfirm}>
             {isLoading ? "Usuwanie..." : "Usuń konto"}
           </AlertDialogAction>
         </AlertDialogFooter>

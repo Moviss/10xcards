@@ -9,13 +9,7 @@ interface TopNavProps {
   isLoggingOut?: boolean;
 }
 
-export function TopNav({
-  userEmail,
-  currentPath,
-  onLogout,
-  onDeleteAccountClick,
-  isLoggingOut = false,
-}: TopNavProps) {
+export function TopNav({ userEmail, currentPath, onLogout, onDeleteAccountClick, isLoggingOut = false }: TopNavProps) {
   return (
     <header className="hidden h-14 items-center justify-between border-b px-6 md:flex">
       <div className="flex items-center gap-8">

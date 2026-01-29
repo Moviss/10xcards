@@ -20,12 +20,7 @@ interface NavLinksProps {
 
 export function NavLinks({ currentPath, orientation = "horizontal", onLinkClick }: NavLinksProps) {
   return (
-    <nav
-      className={cn(
-        "flex gap-6",
-        orientation === "vertical" ? "flex-col" : "flex-row items-center"
-      )}
-    >
+    <nav className={cn("flex gap-6", orientation === "vertical" ? "flex-col" : "flex-row items-center")}>
       {NAV_ITEMS.map((item) => (
         <NavLink
           key={item.href}

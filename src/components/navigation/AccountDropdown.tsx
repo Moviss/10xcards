@@ -41,10 +41,7 @@ export function AccountDropdown({
           {isLoggingOut ? "Wylogowywanie..." : "Wyloguj"}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={onDeleteAccountClick}
-          className="text-destructive focus:text-destructive"
-        >
+        <DropdownMenuItem onClick={onDeleteAccountClick} className="text-destructive focus:text-destructive">
           <Trash2 className="mr-2 h-4 w-4" />
           Usuń konto
         </DropdownMenuItem>
