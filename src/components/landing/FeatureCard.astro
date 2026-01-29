@@ -17,7 +17,9 @@ const icons: Record<string, string> = {
 const iconSvg = icons[icon] || icons.sparkles;
 ---
 
-<article class="flex flex-col items-center rounded-xl border bg-card p-6 text-center shadow-sm transition-shadow hover:shadow-md">
+<article
+  class="flex flex-col items-center rounded-xl border bg-card p-6 text-center shadow-sm transition-shadow hover:shadow-md"
+>
   <div class="mb-4 flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
     <Fragment set:html={iconSvg} />
   </div>
