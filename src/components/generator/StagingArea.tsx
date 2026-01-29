@@ -40,30 +40,16 @@ export function StagingArea({
     }
   }, [focusOnMount]);
 
-  const handleAccept = useCallback(
-    (id: string) => () => onAccept(id),
-    [onAccept]
-  );
+  const handleAccept = useCallback((id: string) => () => onAccept(id), [onAccept]);
 
-  const handleReject = useCallback(
-    (id: string) => () => onReject(id),
-    [onReject]
-  );
+  const handleReject = useCallback((id: string) => () => onReject(id), [onReject]);
 
-  const handleEdit = useCallback(
-    (id: string) => () => onEdit(id),
-    [onEdit]
-  );
+  const handleEdit = useCallback((id: string) => () => onEdit(id), [onEdit]);
 
   const hasAccepted = acceptedCount > 0;
 
   return (
-    <section
-      ref={containerRef}
-      tabIndex={-1}
-      aria-labelledby="staging-area-title"
-      className="space-y-6 outline-none"
-    >
+    <section ref={containerRef} tabIndex={-1} aria-labelledby="staging-area-title" className="space-y-6 outline-none">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 id="staging-area-title" className="text-lg font-semibold">
@@ -95,11 +81,7 @@ export function StagingArea({
       </div>
 
       <div className="flex justify-end border-t pt-4">
-        <Button
-          onClick={onSave}
-          disabled={!hasAccepted || isSaving}
-          className="min-w-[200px]"
-        >
+        <Button onClick={onSave} disabled={!hasAccepted || isSaving} className="min-w-[200px]">
           {isSaving ? "Zapisywanie..." : `Zapisz zaakceptowane (${acceptedCount})`}
         </Button>
       </div>

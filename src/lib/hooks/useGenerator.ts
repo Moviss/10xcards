@@ -1,12 +1,8 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
-import type {
-  GenerateFlashcardsCommand,
-  GenerationResponseDTO,
-  CreateFlashcardsBatchCommand,
-  FlashcardsBatchResponseDTO,
-} from "@/types";
+import type { GenerateFlashcardsCommand, GenerationResponseDTO, CreateFlashcardsBatchCommand } from "@/types";
 import type { ProposalViewModel, GeneratorState, GeneratorErrors } from "@/components/generator/types";
 import { GENERATOR_CONFIG } from "@/components/generator/types";
+import { authenticatedFetch } from "@/lib/auth.client";
 
 interface UseGeneratorReturn {
   // Form state
@@ -162,9 +158,8 @@ export function useGenerator(): UseGeneratorReturn {
         source_text: sourceText,
       };
 
-      const response = await fetch("/api/generations", {
+      const response = await authenticatedFetch("/api/generations", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(command),
       });
 
@@ -288,9 +283,8 @@ export function useGenerator(): UseGeneratorReturn {
         rejected_count: proposals.filter((p) => p.status === "rejected").length,
       };
 
-      const response = await fetch("/api/flashcards/batch", {
+      const response = await authenticatedFetch("/api/flashcards/batch", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(command),
       });
 
@@ -310,7 +304,7 @@ export function useGenerator(): UseGeneratorReturn {
         return;
       }
 
-      const _result: FlashcardsBatchResponseDTO = await response.json();
+      await response.json();
 
       // Clear state after success
       setSourceTextState("");

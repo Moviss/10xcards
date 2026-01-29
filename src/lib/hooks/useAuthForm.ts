@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import type { z } from "zod";
+import { setAuthToken } from "@/lib/auth.client";
 
 interface UseAuthFormOptions<T extends z.ZodType> {
   schema: T;
@@ -48,9 +49,10 @@ export function useAuthForm<T extends z.ZodType>({ schema, submitUrl, redirectUr
           body: JSON.stringify(formData),
         });
 
+        const responseData = await response.json();
+
         if (!response.ok) {
-          const errorData = await response.json();
-          const errorMessage = errorData.error || "Wystąpił błąd";
+          const errorMessage = responseData.error || "Wystąpił błąd";
 
           if (response.status === 409) {
             setErrors({ email: "Ten adres email jest już zarejestrowany" });
@@ -60,6 +62,11 @@ export function useAuthForm<T extends z.ZodType>({ schema, submitUrl, redirectUr
             setErrors({ general: errorMessage });
           }
           return;
+        }
+
+        // Store auth token if present in response
+        if (responseData.session?.access_token) {
+          setAuthToken(responseData.session.access_token);
         }
 
         window.location.href = redirectUrl;

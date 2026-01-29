@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useGenerator } from "@/lib/hooks/useGenerator";
 import { SourceTextForm } from "./SourceTextForm";
 import { GenerationLoader } from "./GenerationLoader";
@@ -52,20 +52,23 @@ export function GeneratorContainer() {
 
   // Track if staging area was just populated (for focus management)
   const [shouldFocusStagingArea, setShouldFocusStagingArea] = useState(false);
-  const [previousProposalsLength, setPreviousProposalsLength] = useState(0);
+  const previousProposalsLengthRef = useRef(0);
 
   // Detect when proposals are freshly generated
   useEffect(() => {
-    if (proposals.length > 0 && previousProposalsLength === 0) {
+    if (proposals.length > 0 && previousProposalsLengthRef.current === 0) {
       setShouldFocusStagingArea(true);
     }
-    setPreviousProposalsLength(proposals.length);
-  }, [proposals.length, previousProposalsLength]);
+    previousProposalsLengthRef.current = proposals.length;
+  }, [proposals.length]);
 
-  // Reset focus flag after staging area receives focus
-  const handleStagingAreaFocused = useCallback(() => {
-    setShouldFocusStagingArea(false);
-  }, []);
+  // Reset focus flag after staging area mounts and focuses
+  useEffect(() => {
+    if (shouldFocusStagingArea) {
+      const timer = setTimeout(() => setShouldFocusStagingArea(false), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [shouldFocusStagingArea]);
 
   // Show error toasts
   useEffect(() => {
@@ -88,16 +91,17 @@ export function GeneratorContainer() {
     }
   }, [saveError]);
 
-  // Handle successful save
+  // Handle save with success toast
   const handleSave = useCallback(async () => {
+    const countBefore = proposals.filter((p) => p.status === "accepted").length;
     await saveAcceptedProposals();
-    // If no error, show success toast (error is shown via useEffect)
-    if (!saveError) {
-      toast.success("Fiszki zostały zapisane pomyślnie!", {
+    // Show success toast only if there were accepted proposals (save was attempted)
+    if (countBefore > 0) {
+      toast.success(`Zapisano ${countBefore} fiszek pomyślnie!`, {
         duration: 3000,
       });
     }
-  }, [saveAcceptedProposals, saveError]);
+  }, [saveAcceptedProposals, proposals]);
 
   const hasProposals = proposals.length > 0;
   const isEditModalOpen = editingProposal !== null;
@@ -137,8 +141,6 @@ export function GeneratorContainer() {
           focusOnMount={shouldFocusStagingArea}
         />
       )}
-
-      {shouldFocusStagingArea && <span onFocus={handleStagingAreaFocused} />}
 
       <ProposalEditModal
         proposal={editingProposal}

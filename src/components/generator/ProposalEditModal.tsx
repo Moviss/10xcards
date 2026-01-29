@@ -19,12 +19,7 @@ interface ProposalEditModalProps {
   onSave: (id: string, front: string, back: string) => void;
 }
 
-export function ProposalEditModal({
-  proposal,
-  isOpen,
-  onClose,
-  onSave,
-}: ProposalEditModalProps) {
+export function ProposalEditModal({ proposal, isOpen, onClose, onSave }: ProposalEditModalProps) {
   const frontId = useId();
   const backId = useId();
   const frontErrorId = useId();
@@ -84,8 +79,7 @@ export function ProposalEditModal({
         <DialogHeader>
           <DialogTitle>Edytuj propozycję fiszki</DialogTitle>
           <DialogDescription id="edit-modal-description">
-            Zmodyfikuj treść pytania i odpowiedzi. Po zapisie propozycja zostanie automatycznie
-            zaakceptowana.
+            Zmodyfikuj treść pytania i odpowiedzi. Po zapisie propozycja zostanie automatycznie zaakceptowana.
           </DialogDescription>
         </DialogHeader>
 

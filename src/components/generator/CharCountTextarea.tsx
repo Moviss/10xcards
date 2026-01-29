@@ -77,14 +77,9 @@ export function CharCountTextarea({
             />
           </div>
         </div>
-        <p
-          id={countId}
-          className={cn("text-sm tabular-nums", countColorClass)}
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {charCount.toLocaleString("pl-PL")} / {minLength.toLocaleString("pl-PL")}-
-          {maxLength.toLocaleString("pl-PL")} znaków
+        <p id={countId} className={cn("text-sm tabular-nums", countColorClass)} aria-live="polite" aria-atomic="true">
+          {charCount.toLocaleString("pl-PL")} / {minLength.toLocaleString("pl-PL")}-{maxLength.toLocaleString("pl-PL")}{" "}
+          znaków
         </p>
       </div>
       {error && (
