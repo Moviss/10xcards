@@ -6,7 +6,7 @@ import { StudyProgress } from "./StudyProgress";
 import { StudySummary } from "./StudySummary";
 import { InterruptButton } from "./InterruptButton";
 import { EmptyState } from "./EmptyState";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function LoadingState() {
@@ -157,8 +157,6 @@ export function StudyContainer() {
 
   return (
     <section aria-labelledby="study-title" className="w-full">
-      <Toaster position="top-center" richColors closeButton />
-
       <h1 id="study-title" className="sr-only">
         Sesja nauki fiszek
       </h1>

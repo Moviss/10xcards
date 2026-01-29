@@ -4,7 +4,7 @@ import { SourceTextForm } from "./SourceTextForm";
 import { GenerationLoader } from "./GenerationLoader";
 import { StagingArea } from "./StagingArea";
 import { ProposalEditModal } from "./ProposalEditModal";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 export function GeneratorContainer() {
   const {
@@ -108,8 +108,6 @@ export function GeneratorContainer() {
 
   return (
     <div className="space-y-8">
-      <Toaster position="top-center" richColors closeButton />
-
       <section aria-labelledby="source-text-title">
         <h2 id="source-text-title" className="sr-only">
           Formularz tekstu źródłowego

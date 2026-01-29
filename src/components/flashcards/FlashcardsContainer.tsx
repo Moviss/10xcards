@@ -6,7 +6,7 @@ import { FlashcardsContent } from "./FlashcardsContent";
 import { Pagination } from "./Pagination";
 import { FlashcardAddModal } from "./FlashcardAddModal";
 import { FlashcardEditModal } from "./FlashcardEditModal";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 export function FlashcardsContainer() {
   const {
@@ -110,8 +110,6 @@ export function FlashcardsContainer() {
 
   return (
     <section aria-labelledby="flashcards-title" className="space-y-6">
-      <Toaster position="top-center" richColors closeButton />
-
       <h2 id="flashcards-title" className="sr-only">
         Zarządzanie fiszkami
       </h2>

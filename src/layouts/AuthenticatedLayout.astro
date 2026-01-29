@@ -1,6 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import { Navigation } from "../components/navigation";
+import { GlobalToaster } from "../components/GlobalToaster";
 
 interface Props {
   title?: string;
@@ -22,4 +23,5 @@ const { title = "10xCards" } = Astro.props;
       <slot />
     </main>
   </div>
+  <GlobalToaster client:load transition:persist />
 </Layout>
