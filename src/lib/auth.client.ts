@@ -46,3 +46,18 @@ export async function authenticatedFetch(url: string, options: RequestInit = {})
     headers,
   });
 }
+
+export function getUserEmailFromToken(): string | null {
+  const token = getAuthToken();
+  if (!token) return null;
+
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+
+    const payload = JSON.parse(atob(parts[1]));
+    return payload.email || null;
+  } catch {
+    return null;
+  }
+}
