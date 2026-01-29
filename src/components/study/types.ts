@@ -130,6 +130,7 @@ export interface UseStudySessionReturn {
   isSubmitting: boolean;
   summary: SessionSummary | null;
   error: string | null;
+  hasAnyFlashcards: boolean;
 
   // Akcje
   fetchSession: () => Promise<void>;

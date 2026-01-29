@@ -93,6 +93,7 @@ export function useStudySession(): UseStudySessionReturn {
   const [status, setStatus] = useState<StudySessionStatus>("idle");
   const [cards, setCards] = useState<StudyCardDTO[]>([]);
   const [statistics, setStatistics] = useState<StudySessionStatisticsDTO | null>(null);
+  const [hasAnyFlashcards, setHasAnyFlashcards] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Display state
@@ -120,6 +121,7 @@ export function useStudySession(): UseStudySessionReturn {
 
       setCards(response.cards);
       setStatistics(response.statistics);
+      setHasAnyFlashcards(response.has_any_flashcards);
 
       if (response.cards.length === 0) {
         setStatus("empty");
@@ -252,6 +254,7 @@ export function useStudySession(): UseStudySessionReturn {
     isSubmitting,
     summary,
     error,
+    hasAnyFlashcards,
 
     // Akcje
     fetchSession,

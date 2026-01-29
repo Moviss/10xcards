@@ -29,6 +29,7 @@ export function StudyContainer() {
     isSubmitting,
     summary,
     error,
+    hasAnyFlashcards,
     startSession,
     revealCard,
     submitAnswer,
@@ -99,7 +100,7 @@ export function StudyContainer() {
         return <LoadingState />;
 
       case "empty":
-        return <EmptyState hasAnyFlashcards={statistics?.total_cards === 0 ? false : true} />;
+        return <EmptyState hasAnyFlashcards={hasAnyFlashcards} />;
 
       case "ready":
         if (!statistics) return <LoadingState />;

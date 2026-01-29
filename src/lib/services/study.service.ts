@@ -53,6 +53,16 @@ export class StudyService {
       throw new StudyServiceError("Błąd serwera", 500);
     }
 
+    // Sprawdź czy użytkownik ma w ogóle jakieś fiszki (potrzebne dla empty state)
+    const { count: totalFlashcardsCount, error: countError } = await this.supabase
+      .from("flashcards")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId);
+
+    if (countError) {
+      throw new StudyServiceError("Błąd serwera", 500);
+    }
+
     // Mapowanie na StudyCardDTO z ustawieniem is_new
     const reviewCardsDTO: StudyCardDTO[] = (reviewCards ?? []).map((card) => ({
       id: card.id,
@@ -78,6 +88,7 @@ export class StudyService {
         new_cards: newCardsDTO.length,
         review_cards: reviewCardsDTO.length,
       },
+      has_any_flashcards: (totalFlashcardsCount ?? 0) > 0,
     };
   }
 

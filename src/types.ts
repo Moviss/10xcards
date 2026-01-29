@@ -221,6 +221,7 @@ export interface StudySessionStatisticsDTO {
 export interface StudySessionResponseDTO {
   cards: StudyCardDTO[];
   statistics: StudySessionStatisticsDTO;
+  has_any_flashcards: boolean;
 }
 
 /**
