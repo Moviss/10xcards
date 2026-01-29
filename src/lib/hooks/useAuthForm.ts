@@ -4,7 +4,7 @@ import type { z } from "zod";
 interface UseAuthFormOptions<T extends z.ZodType> {
   schema: T;
   submitUrl: string;
-  onSuccess: () => void;
+  redirectUrl: string;
 }
 
 interface FormErrors {
@@ -12,7 +12,7 @@ interface FormErrors {
   general?: string;
 }
 
-export function useAuthForm<T extends z.ZodType>({ schema, submitUrl, onSuccess }: UseAuthFormOptions<T>) {
+export function useAuthForm<T extends z.ZodType>({ schema, submitUrl, redirectUrl }: UseAuthFormOptions<T>) {
   type FormData = z.infer<T>;
 
   const [formData, setFormData] = useState<FormData>({ email: "", password: "" } as FormData);
@@ -62,14 +62,14 @@ export function useAuthForm<T extends z.ZodType>({ schema, submitUrl, onSuccess 
           return;
         }
 
-        onSuccess();
+        window.location.href = redirectUrl;
       } catch {
         setErrors({ general: "Nie można połączyć z serwerem. Spróbuj ponownie." });
       } finally {
         setIsSubmitting(false);
       }
     },
-    [formData, schema, submitUrl, onSuccess]
+    [formData, schema, submitUrl, redirectUrl]
   );
 
   return {
