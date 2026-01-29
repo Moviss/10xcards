@@ -1,0 +1,323 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2024-01-15T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_10xcards",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "10xcards API",
+      "description": "API endpoints for 10xcards flashcard application",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_10xcards",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "access_token": "",
+        "test_email": "test@example.com",
+        "test_password": "TestPassword123!"
+      }
+    },
+    {
+      "_id": "env_local",
+      "_type": "environment",
+      "parentId": "env_base",
+      "name": "Local",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "access_token": "",
+        "test_email": "test@example.com",
+        "test_password": "TestPassword123!"
+      }
+    },
+    {
+      "_id": "env_production",
+      "_type": "environment",
+      "parentId": "env_base",
+      "name": "Production",
+      "data": {
+        "base_url": "https://10xcards.example.com",
+        "access_token": "",
+        "test_email": "test@example.com",
+        "test_password": "TestPassword123!"
+      }
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_10xcards",
+      "name": "Auth",
+      "description": "Authentication endpoints"
+    },
+    {
+      "_id": "fld_flashcards",
+      "_type": "request_group",
+      "parentId": "wrk_10xcards",
+      "name": "Flashcards",
+      "description": "Flashcard CRUD operations"
+    },
+    {
+      "_id": "fld_flashcards_batch",
+      "_type": "request_group",
+      "parentId": "wrk_10xcards",
+      "name": "Flashcards Batch",
+      "description": "Batch operations on flashcards"
+    },
+    {
+      "_id": "fld_study",
+      "_type": "request_group",
+      "parentId": "wrk_10xcards",
+      "name": "Study",
+      "description": "Study session endpoints"
+    },
+    {
+      "_id": "fld_generations",
+      "_type": "request_group",
+      "parentId": "wrk_10xcards",
+      "name": "Generations",
+      "description": "AI flashcard generation endpoints"
+    },
+    {
+      "_id": "req_auth_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Register",
+      "description": "Register a new user account",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/auth/register",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.test_email }}\",\n  \"password\": \"{{ _.test_password }}\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login",
+      "description": "Login with email and password",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/auth/login",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.test_email }}\",\n  \"password\": \"{{ _.test_password }}\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_logout",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Logout",
+      "description": "Logout current user session",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/auth/logout",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_auth_delete_account",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Delete Account",
+      "description": "Permanently delete user account and all associated data",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/auth/account",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_flashcards_list",
+      "_type": "request",
+      "parentId": "fld_flashcards",
+      "name": "List Flashcards",
+      "description": "Get paginated list of flashcards with optional filtering and sorting",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/flashcards",
+      "parameters": [
+        { "name": "page", "value": "1", "disabled": false },
+        { "name": "limit", "value": "20", "disabled": false },
+        { "name": "search", "value": "", "disabled": true },
+        { "name": "sort", "value": "created_at", "disabled": true },
+        { "name": "order", "value": "desc", "disabled": true }
+      ],
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_flashcards_get",
+      "_type": "request",
+      "parentId": "fld_flashcards",
+      "name": "Get Flashcard",
+      "description": "Get a single flashcard by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/flashcards/:id",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_flashcards_create",
+      "_type": "request",
+      "parentId": "fld_flashcards",
+      "name": "Create Flashcard",
+      "description": "Create a new flashcard",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/flashcards",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"front\": \"What is the capital of France?\",\n  \"back\": \"Paris\"\n}"
+      }
+    },
+    {
+      "_id": "req_flashcards_update",
+      "_type": "request",
+      "parentId": "fld_flashcards",
+      "name": "Update Flashcard",
+      "description": "Update an existing flashcard",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/flashcards/:id",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"front\": \"Updated front content\",\n  \"back\": \"Updated back content\"\n}"
+      }
+    },
+    {
+      "_id": "req_flashcards_delete",
+      "_type": "request",
+      "parentId": "fld_flashcards",
+      "name": "Delete Flashcard",
+      "description": "Delete a flashcard by ID",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/flashcards/:id",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_flashcards_batch_create",
+      "_type": "request",
+      "parentId": "fld_flashcards_batch",
+      "name": "Batch Create Flashcards",
+      "description": "Create multiple flashcards from AI generation",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/flashcards/batch",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"generation_log_id\": \"uuid-here\",\n  \"flashcards\": [\n    {\n      \"front\": \"Question 1\",\n      \"back\": \"Answer 1\",\n      \"original_front\": \"Question 1\",\n      \"original_back\": \"Answer 1\",\n      \"is_edited\": false\n    },\n    {\n      \"front\": \"Edited Question 2\",\n      \"back\": \"Answer 2\",\n      \"original_front\": \"Question 2\",\n      \"original_back\": \"Answer 2\",\n      \"is_edited\": true\n    }\n  ],\n  \"rejected_count\": 1\n}"
+      }
+    },
+    {
+      "_id": "req_flashcards_reset_progress",
+      "_type": "request",
+      "parentId": "fld_flashcards_batch",
+      "name": "Reset Progress",
+      "description": "Reset learning progress for a flashcard",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/flashcards/:id/reset-progress",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_study_session",
+      "_type": "request",
+      "parentId": "fld_study",
+      "name": "Get Study Session",
+      "description": "Get flashcards for a study session",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/study/session",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_study_review",
+      "_type": "request",
+      "parentId": "fld_study",
+      "name": "Submit Review",
+      "description": "Submit a flashcard review result",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/study/review",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"flashcard_id\": \"uuid-here\",\n  \"remembered\": true\n}"
+      }
+    },
+    {
+      "_id": "req_generations_create",
+      "_type": "request",
+      "parentId": "fld_generations",
+      "name": "Generate Flashcards",
+      "description": "Generate flashcards from source text using AI",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/generations",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"source_text\": \"The mitochondria is the powerhouse of the cell. It produces ATP through cellular respiration. The process involves glycolysis, the Krebs cycle, and oxidative phosphorylation.\"\n}"
+      }
+    },
+    {
+      "_id": "req_generations_list",
+      "_type": "request",
+      "parentId": "fld_generations",
+      "name": "List Generation Logs",
+      "description": "Get paginated list of generation logs",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/generations",
+      "parameters": [
+        { "name": "page", "value": "1", "disabled": false },
+        { "name": "limit", "value": "20", "disabled": false }
+      ],
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.access_token }}" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {}
+    }
+  ]
+}
