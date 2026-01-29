@@ -1,0 +1,45 @@
+---
+import FeatureCard from "./FeatureCard.astro";
+
+interface Feature {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const features: Feature[] = [
+  {
+    icon: "sparkles",
+    title: "Automatyczne generowanie fiszek",
+    description: "Wklej tekst, a AI stworzy dla Ciebie gotowe fiszki w kilka sekund.",
+  },
+  {
+    icon: "brain",
+    title: "Nauka z algorytmem SM-2",
+    description: "Powtórki w optymalnych odstępach czasu dla maksymalnej efektywności.",
+  },
+  {
+    icon: "edit",
+    title: "Pełna kontrola nad treścią",
+    description: "Edytuj, akceptuj lub odrzucaj propozycje AI według własnych potrzeb.",
+  },
+  {
+    icon: "smartphone",
+    title: "Dostępność na każdym urządzeniu",
+    description: "Responsywny interfejs zoptymalizowany pod naukę na telefonie.",
+  },
+];
+---
+
+<section class="py-16 md:py-24" aria-labelledby="features-heading">
+  <div class="container mx-auto px-4">
+    <h2 id="features-heading" class="mb-12 text-center text-3xl font-bold md:text-4xl">Dlaczego 10xCards?</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        features.map((feature) => (
+          <FeatureCard icon={feature.icon} title={feature.title} description={feature.description} />
+        ))
+      }
+    </div>
+  </div>
+</section>
