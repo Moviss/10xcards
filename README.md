@@ -54,6 +54,22 @@ The application uses GPT-4o-mini to generate question-answer pairs from user-pro
 
 - Node.js 22.14.0 (see `.nvmrc`)
 - npm or yarn
+- Supabase account (for database and authentication)
+- OpenRouter API key (for AI generation)
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```env
+# Supabase
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_KEY=your_supabase_anon_key
+
+# OpenRouter AI
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=openai/gpt-4o-mini  # optional, defaults to gpt-4o-mini
+```
 
 ### Installation
 
@@ -73,12 +89,14 @@ The application uses GPT-4o-mini to generate question-answer pairs from user-pro
    npm install
    ```
 
-4. Start the development server:
+4. Set up environment variables (see above)
+
+5. Start the development server:
    ```bash
    npm run dev
    ```
 
-5. Open your browser and navigate to `http://localhost:4321`
+6. Open your browser and navigate to `http://localhost:3000`
 
 ## Available Scripts
 
@@ -90,6 +108,29 @@ The application uses GPT-4o-mini to generate question-answer pairs from user-pro
 | `npm run lint` | Run ESLint checks |
 | `npm run lint:fix` | Run ESLint and fix issues |
 | `npm run format` | Format code with Prettier |
+
+## Project Structure
+
+```
+src/
+├── components/          # React components
+│   ├── auth/           # Authentication forms
+│   ├── flashcards/     # Flashcard management components
+│   ├── generator/      # AI generation components
+│   ├── navigation/     # Navigation components
+│   ├── study/          # Study session components
+│   └── ui/             # Shadcn/ui components
+├── db/                 # Supabase client and database types
+├── layouts/            # Astro layouts
+├── lib/                # Services, hooks, and utilities
+│   ├── hooks/          # Custom React hooks
+│   ├── schemas/        # Zod validation schemas
+│   └── services/       # Business logic services
+├── pages/              # Astro pages and API routes
+│   └── api/            # REST API endpoints
+├── styles/             # Global CSS styles
+└── types.ts            # Shared TypeScript types (DTOs)
+```
 
 ## Project Scope
 
