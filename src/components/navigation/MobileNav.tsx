@@ -52,13 +52,13 @@ export function MobileNav({
             </SheetTitle>
           </SheetHeader>
 
-          <div className="mt-6 flex flex-col gap-6">
+          <div className="mt-6 flex flex-col gap-6 px-4">
             <NavLinks currentPath={currentPath} orientation="vertical" onLinkClick={handleLinkClick} />
 
             <Separator />
 
             <div className="flex flex-col gap-2">
-              <p className="text-sm text-muted-foreground truncate px-1">{userEmail}</p>
+              <p className="text-sm text-muted-foreground truncate">{userEmail}</p>
 
               <Button variant="ghost" className="justify-start" onClick={handleLogout} disabled={isLoggingOut}>
                 <LogOut className="mr-2 h-4 w-4" />
