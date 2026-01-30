@@ -44,6 +44,13 @@ The application uses GPT-4o-mini to generate question-answer pairs from user-pro
 ### AI Integration
 - **Openrouter.ai** - Access to multiple AI models (OpenAI, Anthropic, Google) with API cost management
 
+### Testing
+- **Vitest** - Unit and integration testing framework
+- **React Testing Library** - React component testing
+- **MSW (Mock Service Worker)** - API mocking for tests
+- **Playwright** - End-to-end testing
+- **axe-core** - Accessibility testing
+
 ### CI/CD & Hosting
 - **GitHub Actions** - CI/CD pipelines
 - **DigitalOcean** - Docker-based application hosting
