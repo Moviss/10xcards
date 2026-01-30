@@ -4,12 +4,13 @@ import { NavLink } from "./NavLink";
 interface NavItem {
   href: string;
   label: string;
+  testId: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/generator", label: "Generator" },
-  { href: "/flashcards", label: "Moje Fiszki" },
-  { href: "/study", label: "Nauka" },
+  { href: "/generator", label: "Generator", testId: "nav-link-generator" },
+  { href: "/flashcards", label: "Moje Fiszki", testId: "nav-link-flashcards" },
+  { href: "/study", label: "Nauka", testId: "nav-link-study" },
 ];
 
 interface NavLinksProps {
@@ -28,6 +29,7 @@ export function NavLinks({ currentPath, orientation = "horizontal", onLinkClick 
           label={item.label}
           isActive={currentPath === item.href}
           onClick={onLinkClick}
+          testId={item.testId}
         />
       ))}
     </nav>

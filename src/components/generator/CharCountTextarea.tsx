@@ -64,6 +64,7 @@ export function CharCountTextarea({
         className="min-h-[200px] resize-y"
         aria-invalid={!!error || isTooLong}
         aria-describedby={`${countId}${error ? ` ${errorId}` : ""}`}
+        data-testid="source-text-textarea"
       />
       <div className="flex items-center justify-between gap-4">
         <div className="flex-1">

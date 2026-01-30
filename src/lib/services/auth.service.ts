@@ -30,11 +30,17 @@ export class AuthService {
       if (error.message.includes("already registered") || error.message.includes("already exists")) {
         throw new AuthServiceError("User already registered", 409);
       }
+      console.error("Supabase signUp error:", error.message);
       throw new AuthServiceError("Registration failed", 500);
     }
 
-    if (!data.user || !data.session) {
+    if (!data.user) {
       throw new AuthServiceError("Registration failed", 500);
+    }
+
+    // If email confirmation is enabled, session may be null
+    if (!data.session) {
+      throw new AuthServiceError("Email confirmation required. Please check your inbox.", 202);
     }
 
     return {

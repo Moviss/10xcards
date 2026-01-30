@@ -25,6 +25,7 @@ export const BulkActions = memo(function BulkActions({
         disabled={disabled || hasNoPending}
         aria-label={`Akceptuj wszystkie oczekujące propozycje (${pendingCount})`}
         className="border-green-500 text-green-700 hover:bg-green-50 hover:text-green-800 dark:border-green-600 dark:text-green-400 dark:hover:bg-green-900/20 dark:hover:text-green-300"
+        data-testid="accept-all-button"
       >
         Akceptuj wszystkie ({pendingCount})
       </Button>

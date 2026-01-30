@@ -25,7 +25,7 @@ export function AccountDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
+        <Button variant="ghost" size="sm" className="gap-2" data-testid="account-dropdown-trigger">
           <User className="h-4 w-4" />
           <span className="max-w-[150px] truncate">{userEmail}</span>
         </Button>
@@ -41,7 +41,11 @@ export function AccountDropdown({
           {isLoggingOut ? "Wylogowywanie..." : "Wyloguj"}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onDeleteAccountClick} className="text-destructive focus:text-destructive">
+        <DropdownMenuItem
+          onClick={onDeleteAccountClick}
+          className="text-destructive focus:text-destructive"
+          data-testid="account-delete-option"
+        >
           <Trash2 className="mr-2 h-4 w-4" />
           Usuń konto
         </DropdownMenuItem>

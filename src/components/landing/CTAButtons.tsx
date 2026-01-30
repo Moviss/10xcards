@@ -7,7 +7,9 @@ export function CTAButtons() {
         <a href="/login">Zaloguj się</a>
       </Button>
       <Button asChild variant="outline" size="lg">
-        <a href="/register">Zarejestruj się</a>
+        <a href="/register" data-testid="register-button">
+          Zarejestruj się
+        </a>
       </Button>
     </div>
   );

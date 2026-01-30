@@ -43,7 +43,7 @@ export function DeleteAccountDialog({ isOpen, onClose, onConfirm, isLoading }: D
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleOpenChange}>
-      <AlertDialogContent>
+      <AlertDialogContent data-testid="delete-account-dialog">
         <AlertDialogHeader>
           <AlertDialogTitle>Czy na pewno chcesz usunąć konto?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -63,6 +63,7 @@ export function DeleteAccountDialog({ isOpen, onClose, onConfirm, isLoading }: D
             placeholder={CONFIRM_TEXT}
             disabled={isLoading}
             aria-describedby="confirm-delete-hint"
+            data-testid="delete-confirm-input"
           />
           <p id="confirm-delete-hint" className="text-xs text-muted-foreground">
             Wpisz dokładnie słowo &quot;{CONFIRM_TEXT}&quot; wielkimi literami.
@@ -71,7 +72,12 @@ export function DeleteAccountDialog({ isOpen, onClose, onConfirm, isLoading }: D
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Anuluj</AlertDialogCancel>
-          <AlertDialogAction variant="destructive" disabled={!isConfirmValid || isLoading} onClick={handleConfirm}>
+          <AlertDialogAction
+            variant="destructive"
+            disabled={!isConfirmValid || isLoading}
+            onClick={handleConfirm}
+            data-testid="delete-account-confirm-button"
+          >
             {isLoading ? "Usuwanie..." : "Usuń konto"}
           </AlertDialogAction>
         </AlertDialogFooter>

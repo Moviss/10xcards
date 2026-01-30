@@ -32,6 +32,7 @@ export function FlashcardTableRow({ flashcard, onClick }: FlashcardTableRowProps
       tabIndex={0}
       role="button"
       aria-label={`Edytuj fiszkę: ${truncateText(flashcard.front, 50)}`}
+      data-testid="flashcard-row"
     >
       <td className="py-4 px-4">
         <span className="line-clamp-2">{truncateText(flashcard.front, FLASHCARDS_CONFIG.MAX_PREVIEW_LENGTH)}</span>

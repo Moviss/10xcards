@@ -109,7 +109,7 @@ export function FlashcardsContainer() {
   );
 
   return (
-    <section aria-labelledby="flashcards-title" className="space-y-6">
+    <section aria-labelledby="flashcards-title" className="space-y-6" data-testid="flashcards-container">
       <h2 id="flashcards-title" className="sr-only">
         Zarządzanie fiszkami
       </h2>

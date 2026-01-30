@@ -17,7 +17,7 @@ export function FlashcardsTable({ flashcards, onFlashcardClick }: FlashcardsTabl
 
   return (
     <div className="hidden md:block border rounded-lg overflow-hidden">
-      <table className="w-full" role="grid">
+      <table className="w-full" role="grid" data-testid="flashcards-table">
         <thead className="bg-muted/50">
           <tr>
             <th scope="col" className="text-left py-3 px-4 font-medium text-sm">

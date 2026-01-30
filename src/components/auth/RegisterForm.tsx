@@ -25,11 +25,12 @@ export function RegisterForm({ redirectUrl = "/generator" }: RegisterFormProps) 
   });
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate data-testid="register-form">
       {errors.general && (
         <div
           role="alert"
           className="rounded-md border border-destructive bg-destructive/10 p-3 text-sm text-destructive"
+          data-testid="register-error-message"
         >
           {errors.general}
         </div>
@@ -46,6 +47,7 @@ export function RegisterForm({ redirectUrl = "/generator" }: RegisterFormProps) 
           onChange={(e) => handleChange("email", e.target.value)}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? emailErrorId : undefined}
+          data-testid="register-email-input"
         />
         {errors.email && (
           <p id={emailErrorId} className="text-sm text-destructive">
@@ -67,6 +69,7 @@ export function RegisterForm({ redirectUrl = "/generator" }: RegisterFormProps) 
           onBlur={() => setShowPasswordRequirements(false)}
           aria-invalid={!!errors.password}
           aria-describedby={errors.password ? passwordErrorId : undefined}
+          data-testid="register-password-input"
         />
         <PasswordRequirements
           password={formData.password}
@@ -79,7 +82,7 @@ export function RegisterForm({ redirectUrl = "/generator" }: RegisterFormProps) 
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full" disabled={isSubmitting} data-testid="register-submit-button">
         {isSubmitting ? "Rejestracja..." : "Zarejestruj się"}
       </Button>
 

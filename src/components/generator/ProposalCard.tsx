@@ -51,6 +51,7 @@ export const ProposalCard = memo(function ProposalCard({
     <article
       className={cn("rounded-lg border-2 bg-card p-4 shadow-sm transition-colors", borderColorClass)}
       aria-label={`Propozycja fiszki - ${statusLabel}`}
+      data-testid="proposal-card"
     >
       <div className="space-y-3">
         <div className="flex items-start justify-between gap-2">

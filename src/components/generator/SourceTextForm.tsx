@@ -33,7 +33,7 @@ export function SourceTextForm({
   const isButtonDisabled = !isValid || isGenerating;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4" data-testid="source-text-form">
       <CharCountTextarea
         value={sourceText}
         onChange={onSourceTextChange}
@@ -44,7 +44,7 @@ export function SourceTextForm({
         label="Tekst źródłowy"
         placeholder="Wklej tekst, z którego chcesz wygenerować fiszki (np. fragment podręcznika, notatki, artykuł)..."
       />
-      <Button type="submit" disabled={isButtonDisabled} className="w-full sm:w-auto">
+      <Button type="submit" disabled={isButtonDisabled} className="w-full sm:w-auto" data-testid="generate-button">
         {isGenerating ? "Generowanie..." : "Generuj fiszki"}
       </Button>
     </form>
