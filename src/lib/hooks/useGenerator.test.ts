@@ -25,17 +25,19 @@ Object.defineProperty(window, "location", {
 });
 
 // Mock localStorage
-const localStorageMock: Record<string, string> = {};
+let localStorageMock: Record<string, string> = {};
 const mockLocalStorage = {
   getItem: vi.fn((key: string) => localStorageMock[key] ?? null),
   setItem: vi.fn((key: string, value: string) => {
     localStorageMock[key] = value;
   }),
   removeItem: vi.fn((key: string) => {
-    delete localStorageMock[key];
+    const { [key]: _removed, ...rest } = localStorageMock;
+    void _removed;
+    localStorageMock = rest;
   }),
   clear: vi.fn(() => {
-    Object.keys(localStorageMock).forEach((key) => delete localStorageMock[key]);
+    localStorageMock = {};
   }),
   key: vi.fn(),
   length: 0,
@@ -50,7 +52,7 @@ describe("useGenerator", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockAuthenticatedFetch.mockReset();
-    Object.keys(localStorageMock).forEach((key) => delete localStorageMock[key]);
+    localStorageMock = {};
     mockLocation.href = "";
     // Return unique UUIDs for each call
     let uuidCounter = 0;
@@ -65,7 +67,7 @@ describe("useGenerator", () => {
   // Helper Functions
   // ==========================================================================
 
-  const createValidSourceText = (length = GENERATOR_CONFIG.MIN_SOURCE_TEXT_LENGTH): string => {
+  const createValidSourceText = (length: number = GENERATOR_CONFIG.MIN_SOURCE_TEXT_LENGTH): string => {
     return "a".repeat(length);
   };
 
@@ -474,9 +476,13 @@ describe("useGenerator", () => {
     it("should set isGenerating during generation", async () => {
       // Arrange
       const { result } = renderHook(() => useGenerator());
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
 
       mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
@@ -496,7 +502,7 @@ describe("useGenerator", () => {
 
       // Cleanup
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () => Promise.resolve(createMockGenerationResponse()),
         } as Response);
@@ -656,13 +662,13 @@ describe("useGenerator", () => {
       // All proposals still pending
 
       // Act
-      let success: boolean;
+      let success = true; // Initialize to opposite of expected
       await act(async () => {
         success = await result.current.saveAcceptedProposals();
       });
 
       // Assert
-      expect(success!).toBe(false);
+      expect(success).toBe(false);
     });
 
     it("should send correct batch command", async () => {
@@ -758,13 +764,13 @@ describe("useGenerator", () => {
       } as Response);
 
       // Act
-      let success: boolean;
+      let success = false; // Initialize to opposite of expected
       await act(async () => {
         success = await result.current.saveAcceptedProposals();
       });
 
       // Assert
-      expect(success!).toBe(true);
+      expect(success).toBe(true);
       expect(result.current.sourceText).toBe("");
       expect(result.current.proposals).toHaveLength(0);
       expect(result.current.generationLogId).toBeNull();
@@ -807,13 +813,13 @@ describe("useGenerator", () => {
       } as Response);
 
       // Act
-      let success: boolean;
+      let success = true; // Initialize to opposite of expected
       await act(async () => {
         success = await result.current.saveAcceptedProposals();
       });
 
       // Assert
-      expect(success!).toBe(false);
+      expect(success).toBe(false);
       expect(result.current.saveError).toBe("Sesja generowania wygasła. Wygeneruj fiszki ponownie.");
     });
 
@@ -839,9 +845,13 @@ describe("useGenerator", () => {
         result.current.acceptProposal(result.current.proposals[0].id);
       });
 
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
 
       mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
@@ -857,7 +867,7 @@ describe("useGenerator", () => {
 
       // Cleanup
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () => Promise.resolve({ created_count: 2, flashcards: [] }),
         } as Response);
@@ -911,9 +921,13 @@ describe("useGenerator", () => {
       // Arrange
       vi.useFakeTimers();
       const { result } = renderHook(() => useGenerator());
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
 
       mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
@@ -938,7 +952,7 @@ describe("useGenerator", () => {
 
       // Cleanup
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () => Promise.resolve(createMockGenerationResponse()),
         } as Response);
@@ -951,9 +965,13 @@ describe("useGenerator", () => {
       vi.useFakeTimers();
       const { result } = renderHook(() => useGenerator());
 
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
       mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
 
@@ -976,7 +994,7 @@ describe("useGenerator", () => {
 
       // Complete the generation
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () => Promise.resolve(createMockGenerationResponse()),
         } as Response);

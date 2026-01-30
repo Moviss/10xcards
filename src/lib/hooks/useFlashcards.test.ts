@@ -20,17 +20,19 @@ Object.defineProperty(window, "location", {
 });
 
 // Mock sessionStorage
-const mockSessionStorage: Record<string, string> = {};
+let mockSessionStorage: Record<string, string> = {};
 vi.stubGlobal("sessionStorage", {
   getItem: vi.fn((key: string) => mockSessionStorage[key] || null),
   setItem: vi.fn((key: string, value: string) => {
     mockSessionStorage[key] = value;
   }),
   removeItem: vi.fn((key: string) => {
-    delete mockSessionStorage[key];
+    const { [key]: _removed, ...rest } = mockSessionStorage;
+    void _removed;
+    mockSessionStorage = rest;
   }),
   clear: vi.fn(() => {
-    Object.keys(mockSessionStorage).forEach((key) => delete mockSessionStorage[key]);
+    mockSessionStorage = {};
   }),
 });
 
@@ -43,7 +45,7 @@ describe("useFlashcards", () => {
     vi.clearAllMocks();
     mockAuthenticatedFetch.mockReset();
     mockLocation.href = "";
-    Object.keys(mockSessionStorage).forEach((key) => delete mockSessionStorage[key]);
+    mockSessionStorage = {};
   });
 
   afterEach(() => {
@@ -119,9 +121,13 @@ describe("useFlashcards", () => {
 
     it("should set isLoading during fetch", async () => {
       // Arrange
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
       mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
 
@@ -133,7 +139,7 @@ describe("useFlashcards", () => {
 
       // Cleanup
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () => Promise.resolve(createMockListResponse()),
         } as Response);
@@ -469,13 +475,13 @@ describe("useFlashcards", () => {
         mockSuccessfulFetch(); // For refetch
 
         // Act
-        let success: boolean;
+        let success = false;
         await act(async () => {
           success = await result.current.createFlashcard({ front: "New Q", back: "New A" });
         });
 
         // Assert
-        expect(success!).toBe(true);
+        expect(success).toBe(true);
         expect(mockAuthenticatedFetch).toHaveBeenCalledWith(
           "/api/flashcards",
           expect.objectContaining({
@@ -512,9 +518,13 @@ describe("useFlashcards", () => {
       it("should set isSaving during create", async () => {
         // Arrange
         const result = await renderAndWaitForFetch();
-        let resolvePromise: (value: Response) => void;
+        const promiseControls = {
+          resolve: (value: Response) => {
+            void value;
+          },
+        };
         const pendingPromise = new Promise<Response>((resolve) => {
-          resolvePromise = resolve;
+          promiseControls.resolve = resolve;
         });
         mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
 
@@ -530,7 +540,7 @@ describe("useFlashcards", () => {
         // Cleanup
         mockSuccessfulFetch();
         await act(async () => {
-          resolvePromise!({
+          promiseControls.resolve({
             ok: true,
             json: () => Promise.resolve(createMockFlashcard()),
           } as Response);
@@ -655,9 +665,13 @@ describe("useFlashcards", () => {
       it("should set isDeleting during delete", async () => {
         // Arrange
         const result = await renderAndWaitForFetch();
-        let resolvePromise: (value: Response) => void;
+        const promiseControls = {
+          resolve: (value: Response) => {
+            void value;
+          },
+        };
         const pendingPromise = new Promise<Response>((resolve) => {
-          resolvePromise = resolve;
+          promiseControls.resolve = resolve;
         });
         mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
 
@@ -675,7 +689,7 @@ describe("useFlashcards", () => {
         // Cleanup
         mockSuccessfulFetch();
         await act(async () => {
-          resolvePromise!({
+          promiseControls.resolve({
             ok: true,
             json: () => Promise.resolve({ message: "Deleted" }),
           } as Response);
@@ -707,13 +721,13 @@ describe("useFlashcards", () => {
         } as Response);
 
         // Act
-        let success: boolean;
+        let success = false;
         await act(async () => {
           success = await result.current.resetProgress(cardId);
         });
 
         // Assert
-        expect(success!).toBe(true);
+        expect(success).toBe(true);
         expect(mockAuthenticatedFetch).toHaveBeenCalledWith(
           `/api/flashcards/${cardId}/reset-progress`,
           expect.objectContaining({ method: "POST" })

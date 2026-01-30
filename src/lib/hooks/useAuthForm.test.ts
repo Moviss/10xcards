@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act, waitFor } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { useAuthForm } from "./useAuthForm";
 import { loginSchema, registerSchema } from "@/lib/schemas/auth.schema";
 
@@ -541,9 +541,13 @@ describe("useAuthForm", () => {
       const { result } = renderLoginForm();
       const mockEvent = createMockEvent();
 
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
       mockFetch.mockReturnValueOnce(pendingPromise);
 
@@ -563,7 +567,7 @@ describe("useAuthForm", () => {
 
       // Cleanup
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () =>
             Promise.resolve({
@@ -736,10 +740,7 @@ describe("useAuthForm", () => {
       });
 
       // Assert
-      expect(mockFetch).toHaveBeenCalledWith(
-        "/api/custom/endpoint",
-        expect.any(Object)
-      );
+      expect(mockFetch).toHaveBeenCalledWith("/api/custom/endpoint", expect.any(Object));
     });
   });
 });

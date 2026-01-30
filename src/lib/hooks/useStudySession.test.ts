@@ -20,17 +20,19 @@ Object.defineProperty(window, "location", {
 });
 
 // Mock sessionStorage
-const mockSessionStorage: Record<string, string> = {};
+let mockSessionStorage: Record<string, string> = {};
 vi.stubGlobal("sessionStorage", {
   getItem: vi.fn((key: string) => mockSessionStorage[key] || null),
   setItem: vi.fn((key: string, value: string) => {
     mockSessionStorage[key] = value;
   }),
   removeItem: vi.fn((key: string) => {
-    delete mockSessionStorage[key];
+    const { [key]: _removed, ...rest } = mockSessionStorage;
+    void _removed;
+    mockSessionStorage = rest;
   }),
   clear: vi.fn(() => {
-    Object.keys(mockSessionStorage).forEach((key) => delete mockSessionStorage[key]);
+    mockSessionStorage = {};
   }),
 });
 
@@ -42,7 +44,7 @@ describe("useStudySession", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockLocation.href = "";
-    Object.keys(mockSessionStorage).forEach((key) => delete mockSessionStorage[key]);
+    mockSessionStorage = {};
   });
 
   afterEach(() => {
@@ -113,8 +115,13 @@ describe("useStudySession", () => {
 
   describe("state machine transitions", () => {
     it("should start in idle state", () => {
-      // Arrange - prevent auto-fetch
-      mockAuthenticatedFetch.mockImplementation(() => new Promise(() => {}));
+      // Arrange - prevent auto-fetch with a never-resolving promise
+      mockAuthenticatedFetch.mockImplementation(
+        () =>
+          new Promise<Response>(() => {
+            /* never resolves */
+          })
+      );
 
       // Act
       const { result } = renderHook(() => useStudySession());
@@ -125,9 +132,13 @@ describe("useStudySession", () => {
 
     it("should transition from idle to loading on mount", async () => {
       // Arrange
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
       mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
 
@@ -141,7 +152,7 @@ describe("useStudySession", () => {
 
       // Cleanup
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () => Promise.resolve(createMockSessionResponse()),
         } as Response);
@@ -683,9 +694,13 @@ describe("useStudySession", () => {
         result.current.startSession();
       });
 
-      let resolvePromise: (value: Response) => void;
+      const promiseControls = {
+        resolve: (value: Response) => {
+          void value;
+        },
+      };
       const pendingPromise = new Promise<Response>((resolve) => {
-        resolvePromise = resolve;
+        promiseControls.resolve = resolve;
       });
       mockAuthenticatedFetch.mockReturnValueOnce(pendingPromise);
 
@@ -700,7 +715,7 @@ describe("useStudySession", () => {
 
       // Cleanup
       await act(async () => {
-        resolvePromise!({
+        promiseControls.resolve({
           ok: true,
           json: () => Promise.resolve({}),
         } as Response);
