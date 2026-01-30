@@ -115,6 +115,11 @@ OPENROUTER_MODEL=openai/gpt-4o-mini  # optional, defaults to gpt-4o-mini
 | `npm run lint` | Run ESLint checks |
 | `npm run lint:fix` | Run ESLint and fix issues |
 | `npm run format` | Format code with Prettier |
+| `npm run test` | Run unit tests in watch mode |
+| `npm run test:ui` | Run unit tests with Vitest UI |
+| `npm run test:coverage` | Run unit tests with coverage report |
+| `npm run test:e2e` | Run E2E tests with Playwright |
+| `npm run test:e2e:ui` | Run E2E tests with Playwright UI |
 
 ## Project Structure
 
