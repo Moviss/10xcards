@@ -25,20 +25,20 @@ Przyszłość AI obejmuje rozwój sztucznej superinteligencji (ASI), która mog�
 Zastosowania AI są wszechobecne: od asystentów głosowych przez systemy rekomendacji po autonomiczne pojazdy. Każda z tych aplikacji wymaga specjalistycznych algorytmów i danych treningowych.
 `;
 
+// Generate unique email for each test run
+function generateTestEmail(): string {
+  const timestamp = Date.now();
+  const random = Math.random().toString(36).substring(2, 8);
+  return `e2e-test-${timestamp}-${random}@example.com`;
+}
+
+// Test password - user is deleted at the end of the test
+const TEST_PASSWORD = "TestPassword123!";
+
 test.describe("Happy Path - User Registration to Account Deletion", () => {
   test("complete user journey: register, generate flashcards, verify, and delete account", async ({ page }) => {
-    // Get test credentials from environment
-    const baseEmail = process.env.E2E_USERNAME;
-    const password = process.env.E2E_PASSWORD;
-
-    if (!baseEmail || !password) {
-      throw new Error("E2E_USERNAME and E2E_PASSWORD must be set in .env.test");
-    }
-
-    // Generate unique email for each test run to avoid "user already exists" errors
-    const timestamp = Date.now();
-    const [, domain] = baseEmail.split("@");
-    const email = `e2e${timestamp}@${domain}`;
+    // Generate unique email for this test run
+    const email = generateTestEmail();
 
     console.log(`Testing with email: ${email}`);
 
@@ -59,7 +59,7 @@ test.describe("Happy Path - User Registration to Account Deletion", () => {
     await expect(page).toHaveURL("/register");
 
     // Step 3: Fill registration form and submit
-    await registerPage.register(email, password);
+    await registerPage.register(email, TEST_PASSWORD);
 
     // Wait for redirect after successful registration
     await expect(page).toHaveURL("/generator", { timeout: 10000 });
