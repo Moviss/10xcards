@@ -3,17 +3,18 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Load environment variables from .env.test
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const envPath = path.resolve(__dirname, ".env.test");
-const result = dotenv.config({ path: envPath, override: true });
+// Load environment variables from .env.test only in local development
+if (!process.env.CI) {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const envPath = path.resolve(__dirname, ".env.test");
+  const result = dotenv.config({ path: envPath, override: true });
 
-if (result.error) {
-  console.error("Error loading .env.test:", result.error);
-} else {
-  console.log("Loaded env from:", envPath);
-  console.log("E2E_USERNAME:", process.env.E2E_USERNAME);
+  if (result.error) {
+    console.error("Error loading .env.test:", result.error);
+  } else {
+    console.log("Loaded env from:", envPath);
+  }
 }
 
 export default defineConfig({
@@ -35,7 +36,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev:e2e",
+    // In CI, use regular dev (env vars are set by workflow)
+    // Locally, use dev:e2e which loads .env.test
+    command: process.env.CI ? "npm run dev" : "npm run dev:e2e",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
