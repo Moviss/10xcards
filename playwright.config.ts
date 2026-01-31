@@ -36,7 +36,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev:e2e",
+    // In CI, use regular dev (env vars are set by workflow)
+    // Locally, use dev:e2e which loads .env.test
+    command: process.env.CI ? "npm run dev" : "npm run dev:e2e",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
