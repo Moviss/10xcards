@@ -59,7 +59,30 @@ test.describe("Happy Path - User Registration to Account Deletion", () => {
     await expect(page).toHaveURL("/register");
 
     // Step 3: Fill registration form and submit
+    // Listen for API response to debug registration issues
+    const responsePromise = page.waitForResponse((response) => response.url().includes("/api/auth/register"), {
+      timeout: 15000,
+    });
+
     await registerPage.register(email, TEST_PASSWORD);
+
+    // Wait for API response and log result
+    const response = await responsePromise;
+    const status = response.status();
+    console.log(`Registration API response status: ${status}`);
+
+    if (status !== 201) {
+      const body = await response.text();
+      console.log(`Registration API response body: ${body}`);
+    }
+
+    // Check for error message on the page
+    const errorMessage = registerPage.errorMessage;
+    const hasError = await errorMessage.isVisible({ timeout: 1000 }).catch(() => false);
+    if (hasError) {
+      const errorText = await errorMessage.textContent();
+      console.log(`Registration error displayed: ${errorText}`);
+    }
 
     // Wait for redirect after successful registration
     await expect(page).toHaveURL("/generator", { timeout: 10000 });
