@@ -8,6 +8,8 @@ An AI-powered flashcard generation web application that automates the creation o
 - [Tech Stack](#tech-stack)
 - [Getting Started Locally](#getting-started-locally)
 - [Available Scripts](#available-scripts)
+- [Testing](#testing)
+- [CI/CD](#cicd)
 - [Project Scope](#project-scope)
 - [Project Status](#project-status)
 - [License](#license)
@@ -120,6 +122,114 @@ OPENROUTER_MODEL=openai/gpt-4o-mini  # optional, defaults to gpt-4o-mini
 | `npm run test:coverage` | Run unit tests with coverage report |
 | `npm run test:e2e` | Run E2E tests with Playwright |
 | `npm run test:e2e:ui` | Run E2E tests with Playwright UI |
+| `npm run dev:e2e` | Start dev server in test mode for E2E |
+
+## Testing
+
+### Unit Tests
+
+Unit tests are written using **Vitest** with **React Testing Library** for component testing and **MSW** for API mocking.
+
+**Test location:** `src/**/*.test.ts`
+
+**Covered areas:**
+- Custom React hooks (`useAuthForm`, `useFlashcards`, `useGenerator`, `useStudySession`)
+- Utility functions
+
+**Running unit tests:**
+```bash
+# Watch mode (development)
+npm run test
+
+# With Vitest UI
+npm run test:ui
+
+# Single run with coverage report
+npm run test:coverage
+
+# Run specific test file
+npx vitest src/lib/hooks/useAuthForm.test.ts
+```
+
+### E2E Tests
+
+End-to-end tests are written using **Playwright** and run against a real Supabase integration environment.
+
+**Test location:** `e2e/**/*.spec.ts`
+
+**Covered scenarios:**
+- Complete user journey: registration → flashcard generation → study session → account deletion
+
+**Running E2E tests:**
+```bash
+# Run all E2E tests (headless)
+npm run test:e2e
+
+# Run with Playwright UI (interactive debugging)
+npm run test:e2e:ui
+
+# Run specific test file
+npx playwright test e2e/happy-path.spec.ts
+
+# Start dev server in test mode (for local E2E development)
+npm run dev:e2e
+```
+
+**E2E Test Requirements:**
+- Environment variables configured for integration environment
+- Playwright browsers installed (`npx playwright install chromium`)
+
+## CI/CD
+
+The project uses **GitHub Actions** for continuous integration. The workflow runs automatically on every pull request to the `main` branch.
+
+### Pipeline Overview
+
+```
+PR to main
+    │
+    ▼
+┌─────────┐
+│  Lint   │ ─── ESLint checks
+└────┬────┘
+     │
+     ├──────────────────┬───────────────────┐
+     ▼                  ▼                   │
+┌──────────┐     ┌───────────┐              │
+│  Unit    │     │   E2E     │              │
+│  Tests   │     │   Tests   │              │
+└────┬─────┘     └─────┬─────┘              │
+     │                 │                    │
+     └────────┬────────┘                    │
+              ▼                             │
+       ┌────────────┐                       │
+       │ PR Status  │ ◄─────────────────────┘
+       │  Comment   │
+       └────────────┘
+```
+
+### Jobs
+
+| Job | Description | Triggers |
+|-----|-------------|----------|
+| **Lint** | Runs ESLint to check code quality | All PRs |
+| **Unit Tests** | Runs Vitest with coverage reporting | After Lint passes |
+| **E2E Tests** | Runs Playwright against integration environment | After Lint passes |
+| **PR Status Comment** | Posts summary with test results and coverage | After all tests pass |
+
+### Artifacts
+
+The CI pipeline generates and stores the following artifacts (retained for 7 days):
+- **unit-coverage** - Unit test coverage report
+- **e2e-report** - Playwright E2E test report
+
+### Required Secrets
+
+For E2E tests in CI, the following secrets must be configured in the `integration` environment:
+- `SUPABASE_URL`
+- `SUPABASE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `OPENROUTER_API_KEY`
 
 ## Project Structure
 
