@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  flashcardProposalSchema,
-  parsedFlashcardsResponseSchema,
-  generateFlashcardsSchema,
-} from "./generation.schema";
+import { flashcardProposalSchema, parsedFlashcardsResponseSchema, generateFlashcardsSchema } from "./generation.schema";
 
 describe("flashcardProposalSchema", () => {
   describe("valid flashcards", () => {
@@ -55,9 +51,7 @@ describe("flashcardProposalSchema", () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
-          "Pytanie nie może przekraczać 500 znaków"
-        );
+        expect(result.error.issues[0].message).toBe("Pytanie nie może przekraczać 500 znaków");
       }
     });
 
@@ -67,9 +61,7 @@ describe("flashcardProposalSchema", () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
-          "Odpowiedź nie może przekraczać 1000 znaków"
-        );
+        expect(result.error.issues[0].message).toBe("Odpowiedź nie może przekraczać 1000 znaków");
       }
     });
   });
@@ -116,9 +108,7 @@ describe("flashcardProposalSchema", () => {
 
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.issues[0].message).toBe(
-            "Niedozwolona treść w odpowiedzi"
-          );
+          expect(result.error.issues[0].message).toBe("Niedozwolona treść w odpowiedzi");
         }
       });
     });
@@ -208,9 +198,7 @@ describe("generateFlashcardsSchema", () => {
 
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.issues[0].message).toBe(
-        "Tekst źródłowy musi zawierać co najmniej 1000 znaków"
-      );
+      expect(result.error.issues[0].message).toBe("Tekst źródłowy musi zawierać co najmniej 1000 znaków");
     }
   });
 
@@ -220,9 +208,7 @@ describe("generateFlashcardsSchema", () => {
 
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.issues[0].message).toBe(
-        "Tekst źródłowy nie może przekraczać 10000 znaków"
-      );
+      expect(result.error.issues[0].message).toBe("Tekst źródłowy nie może przekraczać 10000 znaków");
     }
   });
 

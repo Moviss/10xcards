@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  sanitizeInput,
-  buildUserMessage,
-  containsDangerousContent,
-  DANGEROUS_PATTERNS,
-} from "./prompt-security";
+import { sanitizeInput, buildUserMessage, containsDangerousContent, DANGEROUS_PATTERNS } from "./prompt-security";
 
 describe("sanitizeInput", () => {
   it("should replace triple backticks with single quotes", () => {
@@ -43,8 +38,7 @@ describe("sanitizeInput", () => {
   });
 
   it("should preserve normal educational content", () => {
-    const input =
-      "Fotosynteza to proces, w którym rośliny przekształcają CO2 i H2O w glukozę.";
+    const input = "Fotosynteza to proces, w którym rośliny przekształcają CO2 i H2O w glukozę.";
     const result = sanitizeInput(input);
     expect(result).toBe(input);
   });
@@ -119,18 +113,12 @@ describe("containsDangerousContent", () => {
   describe("should allow safe content", () => {
     it("allows normal educational text", () => {
       expect(containsDangerousContent("Co to jest fotosynteza?")).toBe(false);
-      expect(
-        containsDangerousContent("Mitochondria są elektrowniami komórki.")
-      ).toBe(false);
+      expect(containsDangerousContent("Mitochondria są elektrowniami komórki.")).toBe(false);
     });
 
     it("allows text mentioning scripts in educational context", () => {
-      expect(
-        containsDangerousContent("Napisz skrypt w Pythonie do analizy danych.")
-      ).toBe(false);
-      expect(containsDangerousContent("Scenariusz filmu zawiera dialog.")).toBe(
-        false
-      );
+      expect(containsDangerousContent("Napisz skrypt w Pythonie do analizy danych.")).toBe(false);
+      expect(containsDangerousContent("Scenariusz filmu zawiera dialog.")).toBe(false);
     });
 
     it("allows HTML-like text that is not actual tags", () => {
@@ -139,12 +127,8 @@ describe("containsDangerousContent", () => {
     });
 
     it("allows code examples without dangerous patterns", () => {
-      expect(containsDangerousContent("function add(a, b) { return a + b; }")).toBe(
-        false
-      );
-      expect(containsDangerousContent("const x = document.getElementById")).toBe(
-        false
-      );
+      expect(containsDangerousContent("function add(a, b) { return a + b; }")).toBe(false);
+      expect(containsDangerousContent("const x = document.getElementById")).toBe(false);
     });
   });
 });
