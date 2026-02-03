@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { containsDangerousContent } from "../services/prompt-security";
 
 export const generateFlashcardsSchema = z.object({
   source_text: z
@@ -10,8 +11,16 @@ export const generateFlashcardsSchema = z.object({
 export type GenerateFlashcardsInput = z.infer<typeof generateFlashcardsSchema>;
 
 export const flashcardProposalSchema = z.object({
-  front: z.string().min(1, "Pytanie nie może być puste"),
-  back: z.string().min(1, "Odpowiedź nie może być pusta"),
+  front: z
+    .string()
+    .min(1, "Pytanie nie może być puste")
+    .max(500, "Pytanie nie może przekraczać 500 znaków")
+    .refine((s) => !containsDangerousContent(s), "Niedozwolona treść w pytaniu"),
+  back: z
+    .string()
+    .min(1, "Odpowiedź nie może być pusta")
+    .max(1000, "Odpowiedź nie może przekraczać 1000 znaków")
+    .refine((s) => !containsDangerousContent(s), "Niedozwolona treść w odpowiedzi"),
 });
 
 export const parsedFlashcardsResponseSchema = z.object({
