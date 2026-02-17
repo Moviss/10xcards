@@ -62,6 +62,7 @@ Primary directories:
 - `src/pages/api` API endpoints.
 - `src/lib/services` business logic.
 - `src/lib/hooks` reusable app hooks.
+- `src/lib/i18n` i18n contracts, glossary, namespace map, and error-code catalog.
 - `src/lib/schemas` Zod schemas.
 - `src/components` Astro + React components.
 - `src/components/ui` Shadcn/ui components.

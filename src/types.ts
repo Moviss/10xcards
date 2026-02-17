@@ -367,6 +367,20 @@ export interface LoginCommand {
 // =============================================================================
 
 /**
+ * Optional details payload for standardized API error responses
+ */
+export type ErrorDetailsDTO = string | Record<string, string | number | boolean | null>;
+
+/**
+ * Standardized API error response contract
+ * Target format for i18n-safe backend/frontend error mapping.
+ */
+export interface ErrorResponseDTO {
+  error_code: string;
+  details?: ErrorDetailsDTO;
+}
+
+/**
  * Generic message response (used for logout, delete operations, etc.)
  */
 export interface MessageResponseDTO {
