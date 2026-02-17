@@ -1,6 +1,7 @@
 import { useState, useSyncExternalStore } from "react";
 import { useNavigation } from "@/lib/hooks/useNavigation";
 import { getUserEmailFromToken } from "@/lib/auth.client";
+import { getClientFeatureFlags, isI18nMvpEnabled } from "@/lib/i18n";
 import { TopNav } from "./TopNav";
 import { MobileNav } from "./MobileNav";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
@@ -23,6 +24,7 @@ function useCurrentPath() {
 export function Navigation() {
   const currentPath = useCurrentPath();
   const [userEmail] = useState<string | null>(() => getUserEmailFromToken());
+  const i18nMvpEnabled = isI18nMvpEnabled(getClientFeatureFlags());
   const {
     isLoggingOut,
     isDeleting,
@@ -54,6 +56,7 @@ export function Navigation() {
         onLogout={handleLogout}
         onDeleteAccountClick={openDeleteDialog}
         isLoggingOut={isLoggingOut}
+        isI18nMvpEnabled={i18nMvpEnabled}
       />
 
       <MobileNav
@@ -64,6 +67,7 @@ export function Navigation() {
         onLogout={handleLogout}
         onDeleteAccountClick={openDeleteDialog}
         isLoggingOut={isLoggingOut}
+        isI18nMvpEnabled={i18nMvpEnabled}
       />
 
       <DeleteAccountDialog

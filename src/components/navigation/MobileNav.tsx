@@ -1,9 +1,10 @@
 import { LogOut, Trash2 } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { MobileNavHeader } from "./MobileNavHeader";
 import { NavLinks } from "./NavLinks";
+import { LanguageSwitcherSlot } from "./LanguageSwitcherSlot";
 
 interface MobileNavProps {
   userEmail: string;
@@ -13,6 +14,7 @@ interface MobileNavProps {
   onLogout: () => void;
   onDeleteAccountClick: () => void;
   isLoggingOut?: boolean;
+  isI18nMvpEnabled: boolean;
 }
 
 export function MobileNav({
@@ -23,6 +25,7 @@ export function MobileNav({
   onLogout,
   onDeleteAccountClick,
   isLoggingOut = false,
+  isI18nMvpEnabled,
 }: MobileNavProps) {
   const handleLinkClick = () => {
     onOpenChange(false);
@@ -50,10 +53,12 @@ export function MobileNav({
                 10xCards
               </a>
             </SheetTitle>
+            <SheetDescription className="sr-only">Menu nawigacji mobilnej</SheetDescription>
           </SheetHeader>
 
           <div className="mt-6 flex flex-col gap-6 px-4">
             <NavLinks currentPath={currentPath} orientation="vertical" onLinkClick={handleLinkClick} />
+            <LanguageSwitcherSlot placement="mobile" isI18nMvpEnabled={isI18nMvpEnabled} />
 
             <Separator />
 
