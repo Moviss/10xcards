@@ -53,6 +53,7 @@ jobs:
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      FEATURE_I18N_MVP: "0"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -74,10 +75,42 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
+  e2e-i18n-smoke:
+    name: E2E I18N Flag Smoke
+    runs-on: ubuntu-latest
+    needs: lint
+    environment: integration
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      FEATURE_I18N_MVP: "1"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run i18n feature-flag smoke test
+        run: npx playwright test e2e/i18n-feature-flag.spec.ts
+
+      - name: Upload i18n smoke E2E test report
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: e2e-i18n-smoke-report
+          path: playwright-report/
+          retention-days: 7
+
   status-comment:
     name: PR Status Comment
     runs-on: ubuntu-latest
-    needs: [lint, unit-test, e2e-test]
+    needs: [lint, unit-test, e2e-test, e2e-i18n-smoke]
     if: success()
     permissions:
       pull-requests: write
@@ -118,6 +151,7 @@ jobs:
             | Lint | :white_check_mark: Passed |
             | Unit Tests | :white_check_mark: Passed |
             | E2E Tests | :white_check_mark: Passed |
+            | E2E I18N Flag Smoke | :white_check_mark: Passed |
 
             ### Coverage Summary
             **Unit Tests:** ${unitCoverage}

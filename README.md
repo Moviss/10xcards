@@ -78,6 +78,10 @@ SUPABASE_KEY=your_supabase_anon_key
 # OpenRouter AI
 OPENROUTER_API_KEY=your_openrouter_api_key
 OPENROUTER_MODEL=openai/gpt-4o-mini  # optional, defaults to gpt-4o-mini
+
+# i18n runtime feature flag (safe mode default OFF)
+# enabled values: 1, true, on
+FEATURE_I18N_MVP=0
 ```
 
 ### Installation
@@ -171,6 +175,10 @@ npm run test:e2e:ui
 # Run specific test file
 npx playwright test e2e/happy-path.spec.ts
 
+# i18n feature-flag smoke (OFF/ON)
+FEATURE_I18N_MVP=0 npx playwright test e2e/i18n-feature-flag.spec.ts
+FEATURE_I18N_MVP=1 npx playwright test e2e/i18n-feature-flag.spec.ts
+
 # Start dev server in test mode (for local E2E development)
 npm run dev:e2e
 ```
@@ -193,17 +201,17 @@ PR to main
 │  Lint   │ ─── ESLint checks
 └────┬────┘
      │
-     ├──────────────────┬───────────────────┐
-     ▼                  ▼                   │
-┌──────────┐     ┌───────────┐              │
-│  Unit    │     │   E2E     │              │
-│  Tests   │     │   Tests   │              │
-└────┬─────┘     └─────┬─────┘              │
-     │                 │                    │
-     └────────┬────────┘                    │
-              ▼                             │
-       ┌────────────┐                       │
-       │ PR Status  │ ◄─────────────────────┘
+     ├──────────────────┬──────────────────────┬─────────────────┐
+     ▼                  ▼                      ▼                 │
+┌──────────┐     ┌───────────┐         ┌──────────────┐         │
+│  Unit    │     │   E2E     │         │ E2E I18N     │         │
+│  Tests   │     │   Tests   │         │ Flag Smoke   │         │
+└────┬─────┘     └─────┬─────┘         └──────┬───────┘         │
+     │                 │                      │                 │
+     └────────┬────────┴──────────────┬───────┘                 │
+              ▼                       ▼                          │
+       ┌────────────┐                 │                          │
+       │ PR Status  │ ◄───────────────┴──────────────────────────┘
        │  Comment   │
        └────────────┘
 ```
@@ -214,7 +222,8 @@ PR to main
 |-----|-------------|----------|
 | **Lint** | Runs ESLint to check code quality | All PRs |
 | **Unit Tests** | Runs Vitest with coverage reporting | After Lint passes |
-| **E2E Tests** | Runs Playwright against integration environment | After Lint passes |
+| **E2E Tests** | Runs Playwright regression suite with `FEATURE_I18N_MVP=0` | After Lint passes |
+| **E2E I18N Flag Smoke** | Runs `e2e/i18n-feature-flag.spec.ts` with `FEATURE_I18N_MVP=1` | After Lint passes |
 | **PR Status Comment** | Posts summary with test results and coverage | After all tests pass |
 
 ### Artifacts
@@ -222,6 +231,7 @@ PR to main
 The CI pipeline generates and stores the following artifacts (retained for 7 days):
 - **unit-coverage** - Unit test coverage report
 - **e2e-report** - Playwright E2E test report
+- **e2e-i18n-smoke-report** - Playwright i18n feature-flag smoke report
 
 ### Required Secrets
 
