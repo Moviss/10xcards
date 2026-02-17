@@ -5,3 +5,4 @@ export { NavigationComponent } from "./NavigationComponent";
 export { DeleteAccountDialog } from "./DeleteAccountDialog";
 export { GeneratorPage } from "./GeneratorPage";
 export { FlashcardsPage } from "./FlashcardsPage";
+export { FeatureFlagPage } from "./FeatureFlagPage";
