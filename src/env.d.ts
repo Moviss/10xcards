@@ -17,8 +17,17 @@ interface ImportMetaEnv {
   readonly OPENROUTER_API_KEY: string;
   readonly OPENROUTER_MODEL?: string;
   readonly OPENROUTER_BASE_URL?: string;
+  readonly FEATURE_I18N_MVP?: string;
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
+}
+
+interface Window {
+  __10XCARDS_FEATURE_FLAGS__?: {
+    "feature.i18n_mvp": boolean;
+  };
+  __10XCARDS_I18N_BOOTSTRAP_INITIALIZED__?: boolean;
+  __10XCARDS_I18N_RUNTIME_MARKER__?: "on";
 }

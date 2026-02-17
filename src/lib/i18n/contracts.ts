@@ -36,6 +36,12 @@ export const missingTranslationKey = "errors.common.translation_missing";
 
 export const missingTranslationResolutionOrder = ["active_locale", "fallback_en", "translation_missing_key"] as const;
 
+export const i18nMvpFeatureFlagKey = "feature.i18n_mvp" as const;
+
+export const defaultFeatureFlags = {
+  [i18nMvpFeatureFlagKey]: false,
+} as const;
+
 export function isSupportedLocale(value: string | null | undefined): value is SupportedLocale {
   if (!value) {
     return false;

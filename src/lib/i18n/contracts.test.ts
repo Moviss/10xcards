@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  defaultFeatureFlags,
   fallbackLocale,
+  i18nMvpFeatureFlagKey,
   i18nNamespaces,
   normalizeLocale,
   pluralCategoriesByLocale,
@@ -46,5 +48,10 @@ describe("i18n contracts", () => {
   it("uses CLDR plural categories from step 1 contract", () => {
     expect(pluralCategoriesByLocale.pl).toEqual(["one", "few", "many", "other"]);
     expect(pluralCategoriesByLocale.en).toEqual(["one", "other"]);
+  });
+
+  it("defines i18n feature flag key with safe-mode default", () => {
+    expect(i18nMvpFeatureFlagKey).toBe("feature.i18n_mvp");
+    expect(defaultFeatureFlags[i18nMvpFeatureFlagKey]).toBe(false);
   });
 });
