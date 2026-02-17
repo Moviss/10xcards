@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import { GlobalI18nBootstrap } from "../components/GlobalI18nBootstrap";
+import { getServerFeatureFlags, isI18nMvpEnabled } from "../lib/i18n";
 import "../styles/global.css";
 
 interface Props {
@@ -7,20 +9,26 @@ interface Props {
 }
 
 const { title = "10x Astro Starter" } = Astro.props;
+const featureFlags = getServerFeatureFlags(import.meta.env);
+const serializedFeatureFlags = JSON.stringify(featureFlags).replaceAll("<", "\\u003c");
+const featureFlagsBootstrapScript = `window.__10XCARDS_FEATURE_FLAGS__ = ${serializedFeatureFlags};`;
+const i18nMvpMode = isI18nMvpEnabled(featureFlags) ? "on" : "off";
 ---
 
 <!doctype html>
-<html lang="pl">
+<html lang="pl" data-feature-i18n-mvp={i18nMvpMode}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script is:inline set:html={featureFlagsBootstrapScript} />
     <ClientRouter />
   </head>
   <body>
     <slot />
+    <GlobalI18nBootstrap client:load transition:persist />
   </body>
 </html>
 
